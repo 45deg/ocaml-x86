@@ -5,12 +5,15 @@ open Base
 module W = Stdlib.Int32
 module U = Stdlib.Int64
 
+(* Entry point and boot structures needed to initialize the CPU. *)
 type t = { entry : int32; boot_params : int32; stack : int32; gdt : int32 }
 
 exception Invalid_image of string
 
+(* Raise an invalid boot image error with the given reason. *)
 let invalid message = raise (Invalid_image message)
 
+(* Validate and place the Linux boot image, boot parameters, and initrd in RAM. *)
 let load ~memory ~kernel ~initrd ~command_line =
   if String.length kernel < 0x268 then invalid "Truncated setup header";
   let u8 offset = Char.to_int kernel.[offset] in
@@ -48,6 +51,7 @@ let load ~memory ~kernel ~initrd ~command_line =
   let alignment = u32 0x230 in
   if alignment = 0 || alignment land (alignment - 1) <> 0 then
     invalid "Invalid kernel alignment";
+  (* Reserve the decompressor's full aligned workspace, not just the payload. *)
   let workspace_end = ((entry + alignment - 1) land -alignment) + init_size in
   let ram_size = Memory.size memory in
   if workspace_end > ram_size then invalid "Kernel workspace exceeds RAM";
@@ -56,6 +60,7 @@ let load ~memory ~kernel ~initrd ~command_line =
   if String.length command_line > Int.min (u32 0x238) 4095 then
     invalid "Kernel command line too long";
   let initrd_limit = Int.min ram_size (u32 0x22c + 1) in
+  (* Place the initramfs below the kernel's limit on a 4 KiB boundary. *)
   let initrd_address = (initrd_limit - String.length initrd) land -4096 in
   if initrd_address < workspace_end then
     invalid "Initramfs overlaps kernel workspace";

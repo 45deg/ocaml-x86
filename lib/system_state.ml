@@ -4,6 +4,7 @@ open Base
 module W = Stdlib.Int32
 module U = Stdlib.Int64
 
+(* A cached segment descriptor and its selector. *)
 type segment = {
   selector : int;
   base : int32;
@@ -13,6 +14,7 @@ type segment = {
   valid : bool;
 }
 
+(* A cached linear-to-physical page translation and its permissions. *)
 type translation = {
   page : int32;
   physical_page : int32;
@@ -21,6 +23,7 @@ type translation = {
   epoch : int;
 }
 
+(* Protected-mode control state, descriptor tables, segments, and memory bus. *)
 type t = {
   bus : Physical_bus.t;
   mutable gdt_base : int32;
@@ -43,8 +46,10 @@ type t = {
 exception Unsupported of string
 exception Guest_fault of { vector : int; error : int option }
 
+(* Raise an error for an unsupported system operation. *)
 let unsupported message = raise (Unsupported message)
 
+(* Raise a guest exception with its vector and error code. *)
 let fault vector error =
   let error =
     if List.mem [ 8; 10; 11; 12; 13; 14; 17; 21 ] vector ~equal:Int.equal then
@@ -53,12 +58,16 @@ let fault vector error =
   in
   raise (Guest_fault { vector; error })
 
+(* Test whether a bit mask is set in a 32-bit value. *)
 let bit value mask = not (W.equal (W.logand value mask) 0l)
+(* Interpret an int32 as an unsigned 32-bit integer. *)
 let unsigned value = U.logand (U.of_int32 value) 0xffffffffL
 
+(* Create an empty segment cache for the given selector. *)
 let empty selector =
   { selector; base = 0l; limit = 0L; access = 0; wide = true; valid = false }
 
+(* Create initial protected-mode system state backed by memory. *)
 let create ~memory =
   let flat =
     {
@@ -91,30 +100,43 @@ let create ~memory =
     translations = Array.create ~len:1024 None;
   }
 
+(* Enable PC-style handling of unclaimed physical addresses. *)
 let enable_pc_mode t = Physical_bus.enable_pc_mode t.bus
+(* Return the current privilege level from the code selector. *)
 let cpl t = t.segments.(1).selector land 3
+(* Return the default operand width of the current code segment. *)
 let code_width t = if t.segments.(1).wide then Width.Dword else Width.Word
+(* Return the address width of the current stack segment. *)
 let stack_width t = if t.segments.(2).wide then Width.Dword else Width.Word
+(* Return the selector loaded in a segment register. *)
 let selector t index = t.segments.(index).selector
 
+(* Set the global descriptor table base and limit. *)
 let set_gdt t ~base ~limit =
   t.gdt_base <- base;
   t.gdt_limit <- limit
 
+(* Set the interrupt descriptor table base and limit. *)
 let set_idt t ~base ~limit =
   t.idt_base <- base;
   t.idt_limit <- limit
 
+(* Return the global descriptor table base and limit. *)
 let gdt t = (t.gdt_base, t.gdt_limit)
+(* Return the interrupt descriptor table base and limit. *)
 let idt t = (t.idt_base, t.idt_limit)
+(* Raise a protection fault unless the current privilege level is zero. *)
 let require_ring0 t = if cpl t <> 0 then fault 13 0
 
+(* Read a supported control register. *)
 let read_control t index =
   if index <> 0 && index <> 2 && index <> 3 && index <> 4 then fault 6 0;
   t.control.(index)
 
+(* Discard cached linear-to-physical translations. *)
 let invalidate_translations t = Array.fill t.translations ~pos:0 ~len:1024 None
 
+(* Write a control register and invalidate translations when needed. *)
 let write_control t index value =
   require_ring0 t;
   ignore (read_control t index : int32);
@@ -124,7 +146,9 @@ let write_control t index value =
   t.control.(index) <- value;
   if index <> 2 then invalidate_translations t
 
+(* Translate a linear address, using and updating the translation cache. *)
 let translate t ~user ~access address =
+  (* Convert an MMU page fault into a guest exception after recording CR2. *)
   let walk () =
     try
       Mmu.translate t.bus ~cr0:t.control.(0) ~cr3:t.control.(3)
@@ -139,6 +163,8 @@ let translate t ~user ~access address =
     let offset = W.logand address 0xfffl in
     let slot = W.to_int (W.shift_right_logical page 12) land 1023 in
     let epoch = Physical_bus.translation_epoch t.bus in
+    (* Permissions depend on privilege and access type; watched page-table
+       writes invalidate cached entries by advancing the epoch. *)
     let physical_page =
       match t.translations.(slot) with
       | Some entry
@@ -161,6 +187,7 @@ let translate t ~user ~access address =
     in
     W.logor physical_page offset
 
+(* Read linear memory with paging and privilege checks. *)
 let read_linear ?(supervisor = false) t ~access ~width address =
   let user = (not supervisor) && cpl t = 3 in
   let first = translate t ~user ~access address in
@@ -180,8 +207,11 @@ let read_linear ?(supervisor = false) t ~access ~width address =
     done;
     !value
 
+(* Validate a linear memory range before an access. *)
 let check_linear ?(supervisor = false) t ~access ~address ~width =
   let user = (not supervisor) && cpl t = 3 in
+  (* Check each page separately because adjacent linear pages need not map to
+     adjacent physical addresses or have the same permissions. *)
   let rec loop address remaining =
     if remaining > 0 then (
       let amount =
@@ -193,12 +223,15 @@ let check_linear ?(supervisor = false) t ~access ~address ~width =
   in
   loop address width
 
+(* Write linear memory after checking the full access range. *)
 let write_linear ?(supervisor = false) t ~width address value =
   let user = (not supervisor) && cpl t = 3 in
   let physical = translate t ~user ~access:Write address in
   if W.to_int (W.logand address 0xfffl) + Width.bytes width <= 4096 then
     Physical_bus.write t.bus ~width physical value
   else
+    (* Translate and check every byte before writing any, so a fault on the
+       second page cannot leave a partially written operand. *)
     let addresses =
       Array.init (Width.bytes width) ~f:(fun offset ->
           let address =
@@ -211,6 +244,7 @@ let write_linear ?(supervisor = false) t ~width address value =
         Physical_bus.write t.bus ~width:Byte address
           (W.shift_right_logical value (offset * 8)))
 
+(* Read and decode a segment descriptor selected from the GDT or LDT. *)
 let descriptor t selector =
   let offset = selector land 0xfff8 in
   let base, limit =
@@ -242,15 +276,20 @@ let descriptor t selector =
     address,
     high )
 
+(* Test whether a segment descriptor is present. *)
 let present segment = segment.access land 0x80 <> 0
+(* Test whether a segment descriptor describes code. *)
 let code segment = segment.access land 8 <> 0
+(* Return the descriptor privilege level of a segment. *)
 let dpl segment = (segment.access lsr 5) land 3
 
+(* Set the accessed bit in a descriptor in guest memory. *)
 let mark_accessed t address high =
   if not (bit high 0x100l) then
     write_linear ~supervisor:true t ~width:Dword (W.add address 4l)
       (W.logor high 0x100l)
 
+(* Check whether a data segment can be loaded at the given privilege level. *)
 let validate_data ~level ~index segment =
   let selector = segment.selector in
   if segment.access land 0x10 = 0 then fault 13 (selector land 0xfffc);
@@ -271,6 +310,7 @@ let validate_data ~level ~index segment =
   if not (present segment) then
     fault (if index = 2 then 12 else 11) (selector land 0xfffc)
 
+(* Validate and return a code segment descriptor for a transfer. *)
 let code_descriptor t ~selector ~level ~gate =
   if selector land 0xfffc = 0 then fault 13 0;
   let segment, address, high = descriptor t selector in
@@ -287,6 +327,7 @@ let code_descriptor t ~selector ~level ~gate =
   mark_accessed t address high;
   segment
 
+(* Validate and load a segment selector into its cache. *)
 let load_segment t ~memory:_ ~index ~selector =
   if index < 0 || index >= 6 then fault 6 0;
   if selector land 0xfffc = 0 then (
@@ -301,6 +342,7 @@ let load_segment t ~memory:_ ~index ~selector =
     mark_accessed t address high;
     t.segments.(index) <- segment
 
+(* Check a segmented access and calculate its linear address. *)
 let segment_address segment ~index ~access ~offset ~width =
   let error () = fault (if index = 2 then 12 else 13) 0 in
   if not segment.valid then error ();
@@ -319,28 +361,34 @@ let segment_address segment ~index ~access ~offset ~width =
   else if U.compare last segment.limit > 0 then error ();
   W.add segment.base offset
 
+(* Translate a segment offset to a checked linear address. *)
 let linear_address t ~segment ~access ~offset ~width =
   segment_address t.segments.(segment) ~index:segment ~access ~offset ~width
 
+(* Read guest memory through a segment and the paging system. *)
 let read t ~segment ~access ~width offset =
   read_linear t ~access ~width
     (linear_address t ~segment ~access ~offset ~width:(Width.bytes width))
 
+(* Write guest memory through a segment and the paging system. *)
 let write t ~segment ~width offset value =
   write_linear t ~width
     (linear_address t ~segment ~access:Write ~offset ~width:(Width.bytes width))
     value
 
+(* Validate a segmented memory range without accessing its contents. *)
 let check t ~segment ~access ~address ~width =
   check_linear t ~access
     ~address:(linear_address t ~segment ~access ~offset:address ~width)
     ~width
 
+(* Validate and install the code segment for a far jump. *)
 let far_jump t ~selector ~offset =
   let segment = code_descriptor t ~selector ~level:(cpl t) ~gate:false in
   if U.compare (unsigned offset) segment.limit > 0 then fault 13 0;
   t.segments.(1) <- { segment with selector = selector land 0xfffc lor cpl t }
 
+(* Load the local descriptor table selector and cache. *)
 let load_ldt t selector =
   require_ring0 t;
   if selector land 0xfffc = 0 then (
@@ -355,6 +403,7 @@ let load_ldt t selector =
     t.ldt_base <- segment.base;
     t.ldt_limit <- U.to_int segment.limit)
 
+(* Load and validate the task register and its descriptor. *)
 let load_task t selector =
   require_ring0 t;
   if selector land 0xfffc = 0 || selector land 4 <> 0 then
@@ -368,11 +417,14 @@ let load_task t selector =
   t.task_base <- segment.base;
   t.task_limit <- U.to_int segment.limit
 
+(* Return the current task register selector. *)
 let task_selector t = t.task_selector
+(* Return the current local descriptor table selector. *)
 let ldt_selector t = t.ldtr
 
 (* Interrupt frames are checked before their writes; descriptor A bits and page
    A/D bits may change while validating, as on hardware. *)
+(* Enter an interrupt gate and construct the guest stack frame. *)
 let interrupt t ~vector ~software ~error ~eip ~esp ~eflags =
   let gate_error = (vector * 8) + 2 in
   if vector < 0 || vector > 255 || (vector * 8) + 7 > t.idt_limit then
@@ -439,6 +491,7 @@ let interrupt t ~vector ~software ~error ~eip ~esp ~eflags =
   in
   (offset, final_sp, flags)
 
+(* Restore execution state from an interrupt return frame. *)
 let iret t ~esp ~eflags =
   if bit eflags 0x4000l then unsupported "Task-return IRET is not implemented";
   let get offset =
@@ -483,6 +536,7 @@ let iret t ~esp ~eflags =
       then t.segments.(index) <- empty 0);
   (offset, pointer, flags)
 
+(* Read a supported model-specific register. *)
 let read_msr t index =
   require_ring0 t;
   match index with
@@ -490,6 +544,7 @@ let read_msr t index =
   | 0x174 | 0x175 | 0x176 -> t.sysenter.(index - 0x174)
   | _ -> fault 13 0
 
+(* Write a supported model-specific register. *)
 let write_msr t index value =
   require_ring0 t;
   match index with
@@ -499,6 +554,7 @@ let write_msr t index value =
       t.sysenter.(index - 0x174) <- value
   | _ -> fault 13 0
 
+(* Check whether the current privilege level permits an I/O port access. *)
 let check_io t ~port ~width ~eflags =
   let iopl = W.to_int (W.logand (W.shift_right_logical eflags 12) 3l) in
   if cpl t > iopl then (
@@ -519,6 +575,7 @@ let check_io t ~port ~width ~eflags =
       if bit mask (W.shift_left 1l (port land 7)) then fault 13 0
     done)
 
+(* Validate and normalize a debug register index. *)
 let debug_index t index =
   require_ring0 t;
   if index = 4 || index = 5 then (
@@ -526,8 +583,10 @@ let debug_index t index =
     index + 2)
   else index
 
+(* Read a debug register. *)
 let read_debug t index = t.debug.(debug_index t index)
 
+(* Write a debug register. *)
 let write_debug t index value =
   let index = debug_index t index in
   if index = 7 && bit value 0x20ffl then
@@ -538,6 +597,7 @@ let write_debug t index value =
     | 7 -> W.logor (W.logand value 0xffff2fffl) 0x400l
     | _ -> value)
 
+(* Look up a descriptor if it is visible at the current privilege level. *)
 let visible_descriptor t selector =
   if selector land 0xfffc = 0 then None
   else
@@ -549,6 +609,7 @@ let visible_descriptor t selector =
       else None
     with Guest_fault { vector = 13; _ } -> None
 
+(* Test whether a segment is accessible for reading or writing. *)
 let verify_segment t ~write selector =
   match visible_descriptor t selector with
   | None -> false
@@ -558,6 +619,7 @@ let verify_segment t ~write selector =
       if write then (not (code segment)) && segment.access land 2 <> 0
       else (not (code segment)) || segment.access land 2 <> 0
 
+(* Query the access rights or limit of a visible segment. *)
 let query_segment t ~limit selector =
   match visible_descriptor t selector with
   | None -> None

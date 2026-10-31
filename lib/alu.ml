@@ -6,11 +6,15 @@ open Base
 module W = Stdlib.Int32
 module U = Stdlib.Int64
 
+(* An arithmetic result and its resulting EFLAGS bits. *)
 type result = { value : int32; flags : int32 }
 
+(* Interpret an int32 as an unsigned 32-bit integer. *)
 let unsigned x = U.logand (U.of_int32 x) 0xffff_ffffL
+(* Test the sign bit at the requested operand width. *)
 let negative width x = W.compare (Width.sign_extend width x) 0l < 0
 
+(* Compute arithmetic status flags from the operands and result. *)
 let flags ~width ~left ~right ~value ~carry ~overflow =
   let low = W.to_int (W.logand value 255l) in
   (* 0x9669 encodes even parity for each four-bit value. *)
@@ -26,6 +30,7 @@ let flags ~width ~left ~right ~value ~carry ~overflow =
     lor bit (negative width value) 128
     lor bit overflow 2048)
 
+(* Add two operands and an optional carry, producing status flags. *)
 let add ?(width = Width.Dword) ?(carry = false) left right =
   let left = Width.truncate width left in
   let right = Width.truncate width right in
@@ -40,6 +45,7 @@ let add ?(width = Width.Dword) ?(carry = false) left right =
   in
   { value; flags = flags ~width ~left ~right ~value ~carry ~overflow }
 
+(* Subtract an operand and optional borrow, producing status flags. *)
 let sub ?(width = Width.Dword) ?(carry = false) left right =
   let left = Width.truncate width left in
   let right = Width.truncate width right in
@@ -54,6 +60,7 @@ let sub ?(width = Width.Dword) ?(carry = false) left right =
   in
   { value; flags = flags ~width ~left ~right ~value ~carry ~overflow }
 
+(* Apply a logical operation and compute its status flags. *)
 let logical operation ?(width = Width.Dword) left right =
   let value = Width.truncate width (operation left right) in
   let flags =
@@ -61,11 +68,15 @@ let logical operation ?(width = Width.Dword) left right =
   in
   { value; flags = W.logand flags (W.lognot 16l) }
 
+(* Compute bitwise AND and its status flags. *)
 let logand ?width left right = logical W.logand ?width left right
+(* Compute bitwise OR and its status flags. *)
 let logor ?width left right = logical W.logor ?width left right
+(* Compute bitwise XOR and its status flags. *)
 let logxor ?width left right = logical W.logxor ?width left right
 
 (* PF/ZF/SF for an already width-truncated value. *)
+(* Compute parity, zero, and sign flags for a truncated value. *)
 let status_flags ~width value =
   let low = W.to_int (W.logand value 255l) in
   (* 0x9669 encodes even parity for each four-bit value. *)

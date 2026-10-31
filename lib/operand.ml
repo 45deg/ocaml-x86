@@ -4,9 +4,12 @@
 open Base
 module W = Stdlib.Int32
 
+(* A register or effective memory address used as an operand. *)
 type t = Register of Register.t | Memory of int32
+(* A decoded ModR/M operand, register extension, and default segment. *)
 type modrm = { segment : int; extension : int; rm : t }
 
+(* Decode a ModR/M operand and its effective address. *)
 let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
   let encoding = byte () in
   let mode = encoding lsr 6 in
@@ -17,6 +20,7 @@ let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
   let rm =
     if mode = 3 then Register (Register.of_encoding rm)
     else if Poly.equal address_size Width.Word then (
+      (* A 16-bit displacement is encoded least-significant byte first. *)
       let short () =
         let low = byte () in
         let high = byte () in
@@ -49,6 +53,8 @@ let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
           let index = (sib lsr 3) land 7 in
           let base = sib land 7 in
           if base = 4 || (base = 5 && mode <> 0) then segment := 2;
+          (* In SIB addressing, index 4 means no index and base 5 with
+             mode 0 means a displacement rather than EBP. *)
           let base = if base = 5 && mode = 0 then word () else reg base in
           let index =
             if index = 4 then 0l else W.shift_left (reg index) scale

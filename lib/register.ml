@@ -1,5 +1,7 @@
+(* The eight 32-bit x86 general-purpose registers. *)
 type t = Eax | Ecx | Edx | Ebx | Esp | Ebp | Esi | Edi
 
+(* Return the instruction encoding of a general-purpose register. *)
 let encoding = function
   | Eax -> 0
   | Ecx -> 1
@@ -10,6 +12,7 @@ let encoding = function
   | Esi -> 6
   | Edi -> 7
 
+(* Decode a general-purpose register from its instruction encoding. *)
 let of_encoding = function
   | 0 -> Eax
   | 1 -> Ecx

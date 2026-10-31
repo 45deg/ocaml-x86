@@ -6,14 +6,18 @@ module U = Stdlib.Int64
 
 exception Divide_error
 
+(* The low and high halves of a product and its overflow status. *)
 type product = { low : int32; high : int32; overflow : bool }
 
+(* Interpret an int32 as an unsigned 32-bit integer. *)
 let unsigned value = U.logand (U.of_int32 value) 0xffffffffL
 
+(* Extend an operand according to its width and signedness. *)
 let operand ~width ~signed value =
   if signed then U.of_int32 (Width.sign_extend width value)
   else unsigned (Width.truncate width value)
 
+(* Multiply two operands and report the double-width result and overflow. *)
 let multiply ~width ~signed left right =
   let value =
     U.mul (operand ~width ~signed left) (operand ~width ~signed right)
@@ -29,6 +33,7 @@ let multiply ~width ~signed left right =
   in
   { low; high; overflow }
 
+(* Divide a double-width dividend, checking for division faults. *)
 let divide ~width ~signed ~high ~low divisor =
   let bits = Width.bits width in
   let dividend =

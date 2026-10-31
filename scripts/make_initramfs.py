@@ -12,10 +12,12 @@ import tarfile
 
 
 def build(source):
+    """Build a newc archive from a rootfs tarball without extracting it."""
     output = io.BytesIO()
     inode = 0
 
     def add(name, mode, data=b"", major=0, minor=0):
+        """Append one aligned newc entry to the output archive."""
         nonlocal inode
         inode += 1
         name = name.encode() + b"\0"

@@ -5,8 +5,10 @@
 open Base
 module U = Stdlib.Int64
 
+(* Raise an invalid boot image error with the given reason. *)
 let invalid message = raise (Linux_boot.Invalid_image message)
 
+(* Validate and load an ELF32 kernel into physical memory. *)
 let load ~memory ~image ~initrd_start =
   if String.length image < 52 then invalid "Truncated ELF header";
   let byte offset = Char.to_int image.[offset] in

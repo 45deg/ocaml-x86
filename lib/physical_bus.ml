@@ -6,28 +6,36 @@ open Base
 module W = Stdlib.Int32
 module U = Stdlib.Int64
 
+(* Physical RAM and the selected unclaimed-bus behavior. *)
 type t = { ram : Memory.t; mutable pc_mode : bool }
 
+(* Create a physical bus backed by the supplied RAM. *)
 let create ram = { ram; pc_mode = false }
+(* Enable PC-style handling of unclaimed physical addresses. *)
 let enable_pc_mode t = t.pc_mode <- true
 
+(* Test whether a physical address range lies entirely in RAM. *)
 let in_ram t address bytes =
   U.compare
     (U.logand (U.of_int32 address) 0xffffffffL)
     (U.of_int (Memory.size t.ram - bytes))
   <= 0
 
+(* Track a RAM page used by guest page tables. *)
 let watch_page_table t address =
   if in_ram t address 1 then Memory.watch_page_table t.ram ~address
 
+(* Return the backing RAM's translation invalidation epoch. *)
 let translation_epoch t = Memory.translation_epoch t.ram
 
+(* Read a value of the requested width from RAM. *)
 let read_ram t width address =
   match width with
   | Width.Byte -> W.of_int (Memory.read_u8 t.ram ~address)
   | Word -> W.of_int (Memory.read_u16 t.ram ~address)
   | Dword -> Memory.read_u32 t.ram ~address
 
+(* Write a value of the requested width to RAM. *)
 let write_ram t width address value =
   match width with
   | Width.Byte ->
@@ -35,6 +43,7 @@ let write_ram t width address value =
   | Word -> Memory.write_u16 t.ram ~address (W.to_int (W.logand value 65535l))
   | Dword -> Memory.write_u32 t.ram ~address value
 
+(* Read from the physical bus using the requested width. *)
 let read t ~width address =
   if (not t.pc_mode) || in_ram t address (Width.bytes width) then
     read_ram t width address
@@ -47,6 +56,7 @@ let read t ~width address =
     done;
     !value
 
+(* Write to the physical bus using the requested width. *)
 let write t ~width address value =
   if (not t.pc_mode) || in_ram t address (Width.bytes width) then
     write_ram t width address value
@@ -57,5 +67,6 @@ let write t ~width address value =
         write_ram t Byte address (W.shift_right_logical value (offset * 8))
     done
 
+(* Validate a physical bus address range for access. *)
 let check t ~address ~width =
   if not t.pc_mode then Memory.check_access t.ram ~address ~width

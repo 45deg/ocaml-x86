@@ -1,6 +1,7 @@
 open Base
 module W = Stdlib.Int32
 
+(* CPU registers, execution state, memory system, and attached devices. *)
 type t = {
   memory : Memory.t;
   fpu : Fpu.t;
@@ -18,13 +19,16 @@ type t = {
   output_u8 : port:int -> int -> unit;
 }
 
+(* A guest execution failure reported by the interpreter. *)
 type fault =
   | System_fault of { eip : int32; message : string }
   | Unsupported_opcode of { eip : int32; opcode : int }
   | Memory_fault of { eip : int32; address : int32; width : int }
 
+(* The reason CPU execution stopped. *)
 type stop = Halted | Budget_exhausted | Fault of fault
 
+(* Create a CPU with the supplied memory and byte output callback. *)
 let create ~memory ~output_u8 =
   {
     memory;
@@ -43,18 +47,26 @@ let create ~memory ~output_u8 =
     output_u8;
   }
 
+(* Read a general-purpose register. *)
 let register t r = t.registers.(Register.encoding r)
+(* Write a general-purpose register. *)
 let set_register t r value = t.registers.(Register.encoding r) <- value
+(* Return the current instruction pointer. *)
 let eip t = t.eip
+(* Set the instruction pointer. *)
 let set_eip t value = t.eip <- value
+(* Return the current flags register. *)
 let eflags t = t.eflags
+(* Read a control register from the system state. *)
 let control t index = System_state.read_control t.system index
 
+(* Read a byte relative to the current code segment. *)
 let read_code_byte t ~offset =
   W.to_int
     (System_state.read t.system ~segment:1 ~access:Execute ~width:Byte
        (W.add t.eip (W.of_int offset)))
 
+(* Initialize CPU state for the loaded Linux boot image. *)
 let initialize_linux t (image : Linux_boot.t) =
   System_state.enable_pc_mode t.system;
   t.deliver_faults <- true;
@@ -68,6 +80,7 @@ let initialize_linux t (image : Linux_boot.t) =
   set_register t Esp image.stack;
   List.iter [ Register.Ebx; Ebp; Edi ] ~f:(fun r -> set_register t r 0l)
 
+(* Decode and execute one guest instruction. *)
 let step t =
   let start = t.eip in
   let cursor = ref start in
@@ -82,6 +95,8 @@ let step t =
   let locked = ref false in
   let instruction_code = ref 0 in
   let extended_code = ref 0 in
+  (* Keep EIP at the instruction start while decoding, so a fault can restart it.
+     The cursor also enforces the architectural 15-byte instruction limit. *)
   let byte () =
     if !consumed >= 15 then raise Stdlib.Exit;
     let value =
@@ -93,6 +108,7 @@ let step t =
     Int.incr consumed;
     value
   in
+  (* Assemble instruction bytes in x86 little-endian order. *)
   let immediate width =
     let value = ref 0l in
     for offset = 0 to Width.bytes width - 1 do
@@ -115,12 +131,15 @@ let step t =
   let write_memory width address value =
     write_segment (data_segment !operand_segment) width address value
   in
+  (* Byte encodings 4-7 select AH, CH, DH, and BH, not ESP through EDI. *)
   let register_part width r =
     let encoding = Register.encoding r in
     if Poly.equal width Width.Byte && encoding >= 4 then
       (Register.of_encoding (encoding - 4), 8)
     else (r, 0)
   in
+  (* Register accesses honor partial-register widths; memory accesses use the
+     decoded default segment unless a prefix overrides it. *)
   let read width = function
     | Operand.Register r ->
         let r, shift = register_part width r in
@@ -139,11 +158,14 @@ let step t =
     | Operand.Memory address -> write_memory width address value
   in
   let reg n = Operand.Register (Register.of_encoding n) in
+  (* Decode the operand before validating LOCK, which requires both the opcode
+     extension and knowledge of whether the destination is memory. *)
   let decode () =
     let operands =
       Operand.decode ~address_size:!address_size ~byte ~word
         ~register:(register t) ()
     in
+    (* LOCK is valid only for supported read-modify-write memory operands. *)
     (if !locked then
        let memory =
          match operands.rm with Operand.Memory _ -> true | _ -> false
@@ -169,6 +191,7 @@ let step t =
   in
   let push value =
     let address = W.sub (register t Esp) (W.of_int (Width.bytes !size)) in
+    (* Commit ESP only after the stack write succeeds. *)
     write_segment 2 !size address value;
     set_register t Esp address
   in
@@ -178,6 +201,8 @@ let step t =
     set_register t Esp (W.add address (W.of_int (Width.bytes !size)));
     value
   in
+  (* Validate the new segment before committing ESP; loading SS also delays
+     interrupt delivery until after the following instruction. *)
   let pop_segment index =
     let address = register t Esp in
     let selector = W.to_int (W.logand (read_segment 2 !size address) 0xffffl) in
@@ -200,6 +225,7 @@ let step t =
     if store then write width destination result.Alu.value;
     t.eflags <- W.logor (W.logand t.eflags (W.lognot 0x8d5l)) result.flags
   in
+  (* Condition codes are paired: the low bit negates the base condition. *)
   let condition code =
     let carry = flag 1l in
     let zero = flag 64l in
@@ -239,6 +265,8 @@ let step t =
   try
     if Poly.equal (System_state.stack_width t.system) Width.Word then
       System_state.unsupported "16-bit stack addressing is not implemented";
+    (* Consume all prefixes, leaving the first non-prefix byte as the opcode.
+       Repeated size overrides select the opposite default, not a second toggle. *)
     let rec prefixes () =
       let next = byte () in
       opcode := next;
@@ -344,6 +372,8 @@ let step t =
                  !cursor)
           in
           let operands = decode () in
+          (* x87 state transfers can cross pages; preflight the entire write
+             before storing any bytes or changing the FPU state. *)
           let store address bytes =
             System_state.check t.system
               ~segment:(data_segment !operand_segment)
@@ -1437,10 +1467,12 @@ let step t =
   | Memory.Access_fault { address; width } ->
       Some (Memory_fault { eip = start; address; width })
 
+(* Queue an interrupt vector for delivery. *)
 let request_interrupt t vector =
   if vector < 0 || vector > 255 then invalid_arg "Interrupt vector out of range";
   t.pending_interrupt <- Some vector
 
+(* Deliver an interrupt or exception, handling faults during delivery. *)
 let deliver t ~vector ~error =
   let rec attempt vector error depth =
     try
@@ -1463,6 +1495,7 @@ let deliver t ~vector ~error =
                  message = "Triple fault during exception delivery";
                })
         else
+          (* Certain pairs of faults during delivery become a double fault. *)
           let contributory v =
             List.mem [ 0; 10; 11; 12; 13 ] v ~equal:Int.equal
           in
@@ -1478,10 +1511,13 @@ let deliver t ~vector ~error =
   in
   attempt vector error 0
 
+(* Attach the PC devices used for port I/O and interrupts. *)
 let attach_devices t devices = t.devices <- Some devices
 
+(* Execute instructions until the CPU stops or the step budget is exhausted. *)
 let run t ~max_steps =
   if max_steps < 0 then invalid_arg "Cpu.run: negative budget";
+  (* Advance devices in batches, including while HLT waits for an interrupt. *)
   let rec loop remaining =
     if remaining = 0 then
       if t.halted && Option.is_none t.devices then Halted else Budget_exhausted

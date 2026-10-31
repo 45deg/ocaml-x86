@@ -1,6 +1,7 @@
 open Base
 module W = Stdlib.Int32
 
+(* Find the first or last set bit within the operand width. *)
 let scan ~reverse ~width value =
   let value = Width.truncate width value in
   let rec loop index =
@@ -11,6 +12,7 @@ let scan ~reverse ~width value =
   in
   loop (if reverse then Width.bits width - 1 else 0)
 
+(* Reverse the byte order of a 32-bit value. *)
 let byte_swap value =
   let result = ref 0l in
   for byte = 0 to 3 do
@@ -22,6 +24,7 @@ let byte_swap value =
   done;
   !result
 
+(* Shift bits between two operands and update the affected flags. *)
 let double_shift ~width ~right ~count ~flags ~destination ~source =
   let count = count land 31 in
   let bits = Width.bits width in

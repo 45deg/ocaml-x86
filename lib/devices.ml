@@ -5,6 +5,7 @@
 open Base
 module W = Stdlib.Int32
 
+(* State of one programmable interrupt controller. *)
 type pic = {
   mutable vector : int;
   mutable mask : int;
@@ -16,6 +17,7 @@ type pic = {
   mutable read_service : bool;
 }
 
+(* State of one programmable interval timer channel. *)
 type timer = {
   mutable reload : int;
   mutable remaining : int;
@@ -29,6 +31,7 @@ type timer = {
   mutable output : bool;
 }
 
+(* State of the emulated PC peripherals and their virtual clock. *)
 type t = {
   master : pic;
   slave : pic;
@@ -47,6 +50,7 @@ type t = {
   mutable pci_address : int32;
 }
 
+(* Create an interrupt controller with the given vector base. *)
 let pic vector =
   {
     vector;
@@ -59,6 +63,7 @@ let pic vector =
     read_service = false;
   }
 
+(* Create a timer channel in its initial state. *)
 let timer () =
   {
     reload = 65536;
@@ -73,6 +78,7 @@ let timer () =
     output = true;
   }
 
+(* Create the emulated peripherals and serial output callback. *)
 let create ~output =
   let cmos = Array.create ~len:128 0 in
   cmos.(0xa) <- 0x26;
@@ -105,6 +111,7 @@ let create ~output =
     pci_address = 0l;
   }
 
+(* Find the highest-priority set interrupt bit. *)
 let first bits =
   let rec loop index =
     if index = 8 then None
@@ -113,6 +120,7 @@ let first bits =
   in
   if bits = 0 then None else loop 0
 
+(* Select an unmasked interrupt that can preempt the current service. *)
 let eligible pic =
   let pending = pic.requests land lnot pic.mask in
   if pending = 0 then None
@@ -120,12 +128,14 @@ let eligible pic =
     let priority = Option.value (first pic.service) ~default:8 in
     first (pending land ((1 lsl priority) - 1))
 
+(* Raise an interrupt request on the appropriate controller. *)
 let request t irq =
   if irq < 8 then t.master.requests <- t.master.requests lor (1 lsl irq)
   else (
     t.slave.requests <- t.slave.requests lor (1 lsl (irq - 8));
     t.master.requests <- t.master.requests lor 4)
 
+(* Update the UART interrupt request from its pending conditions. *)
 let update_uart t =
   let pending =
     ((t.uart.(1) land 1 <> 0 && not (Queue.is_empty t.rx))
@@ -135,15 +145,18 @@ let update_uart t =
   if pending && not t.uart_irq then request t 4;
   t.uart_irq <- pending
 
+(* Queue serial input bytes for the guest. *)
 let input t text =
   String.iter text ~f:(fun byte -> Queue.enqueue t.rx byte);
   update_uart t
 
+(* Mark an interrupt as acknowledged by a controller. *)
 let acknowledge pic irq =
   pic.requests <- pic.requests land lnot (1 lsl irq);
   if not pic.auto_eoi then pic.service <- pic.service lor (1 lsl irq);
   pic.vector + irq
 
+(* Select and acknowledge the next deliverable interrupt vector. *)
 let interrupt t =
   if Option.is_some (eligible t.slave) then
     t.master.requests <- t.master.requests lor 4;
@@ -157,6 +170,7 @@ let interrupt t =
         | Some irq -> acknowledge t.slave irq)
   | Some irq -> Some (acknowledge t.master irq)
 
+(* Handle a command or data write to an interrupt controller. *)
 let write_pic pic ~command value =
   if command then (
     if value land 16 <> 0 then (
@@ -185,12 +199,15 @@ let write_pic pic ~command value =
         pic.init <- 0
     | _ -> pic.mask <- value
 
+(* Return the current 16-bit timer count. *)
 let timer_count timer = timer.remaining land 65535
 
+(* Encode the timer channel status byte. *)
 let timer_status (timer : timer) =
   (if timer.output then 128 else 0)
   lor (timer.access lsl 4) lor (timer.mode lsl 1)
 
+(* Read the next byte of a timer count or latched status. *)
 let read_timer timer =
   match timer.status with
   | Some status ->
@@ -204,12 +221,14 @@ let read_timer timer =
       if timer.access <> 3 || not timer.read_high then timer.latch <- None;
       value
 
+(* Load a new timer count and restart the channel. *)
 let load_timer timer count =
   timer.reload <- (if count = 0 then 65536 else count);
   timer.remaining <- timer.reload;
   timer.enabled <- true;
   timer.output <- timer.mode <> 0
 
+(* Write a byte of a timer channel's reload value. *)
 let write_timer timer value =
   match timer.access with
   | 1 -> load_timer timer value
@@ -221,6 +240,7 @@ let write_timer timer value =
           timer.low <- None;
           load_timer timer (low lor (value lsl 8)))
 
+(* Apply a timer control or read-back command. *)
 let timer_command t value =
   let channel = value lsr 6 in
   if channel = 3 then
@@ -242,9 +262,11 @@ let timer_command t value =
       timer.read_high <- false;
       timer.latch <- None)
 
+(* Advance peripheral time by the given number of virtual CPU cycles. *)
 let advance t ~cycles =
   t.elapsed_cycles <-
     Stdlib.Int64.add t.elapsed_cycles (Stdlib.Int64.of_int cycles);
+  (* Carry the fractional PIT ticks between calls to avoid clock drift. *)
   t.phase <- t.phase + (cycles * 1193182);
   let ticks = t.phase / 100000000 in
   t.phase <- t.phase % 100000000;
@@ -264,6 +286,7 @@ let advance t ~cycles =
           timer.output <- timer.remaining > timer.reload / 2));
   update_uart t
 
+(* Read a UART register, respecting the divisor latch. *)
 let uart_read t index =
   let dlab = t.uart.(3) land 128 <> 0 in
   match index with
@@ -290,6 +313,7 @@ let uart_read t index =
         lor ((t.uart.(4) land 12) lsl 4)
   | _ -> t.uart.(index)
 
+(* Write a UART register, respecting the divisor latch. *)
 let uart_write t index value =
   let dlab = t.uart.(3) land 128 <> 0 in
   match index with
@@ -308,6 +332,7 @@ let uart_write t index value =
   | 3 | 4 | 7 -> t.uart.(index) <- value
   | _ -> ()
 
+(* Read the selected CMOS register and virtual clock value. *)
 let read_cmos t =
   let seconds =
     Stdlib.Int64.to_int (Stdlib.Int64.div t.elapsed_cycles 100000000L)
@@ -331,6 +356,7 @@ let read_cmos t =
       value
   | index -> t.cmos.(index)
 
+(* Read one byte from an emulated I/O port. *)
 let read_byte t port =
   match port with
   | 0x20 ->
@@ -347,6 +373,7 @@ let read_byte t port =
   | n when n >= 0x3f8 && n <= 0x3ff -> uart_read t (n - 0x3f8)
   | _ -> 255
 
+(* Write one byte to an emulated I/O port. *)
 let write_byte t port value =
   match port with
   | 0x20 | 0x21 -> write_pic t.master ~command:(port = 0x20) value
@@ -365,6 +392,7 @@ let write_byte t port value =
   | n when n >= 0x3f8 && n <= 0x3ff -> uart_write t (n - 0x3f8) value
   | _ -> ()
 
+(* Read an I/O port using the requested operand width. *)
 let read t ~port ~width =
   let value =
     if port = 0xcf8 && Poly.equal width Width.Dword then t.pci_address
@@ -382,6 +410,7 @@ let read t ~port ~width =
   update_uart t;
   value
 
+(* Write an I/O port using the requested operand width. *)
 let write t ~port ~width value =
   if port = 0xcf8 && Poly.equal width Width.Dword then t.pci_address <- value
   else

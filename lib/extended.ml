@@ -2,10 +2,12 @@
     Nonfinite operands and exceptional results are explicitly unsupported. *)
 
 (* Finite binary80 arithmetic uses exact rational intermediates. *)
+(* A finite binary80 value represented by sign, significand, and exponent. *)
 type t = { negative : bool; significand : Z.t; exponent : int }
 
 exception Unsupported of string
 
+(* Decode a finite binary80 byte string. *)
 let decode bytes =
   let bits = Z.of_bits (String.sub bytes 0 8) in
   let exponent =
@@ -18,6 +20,7 @@ let decode bytes =
     exponent = max 1 exponent - 16383 - 63;
   }
 
+(* Convert a decoded binary80 value to an exact rational. *)
 let rational value =
   let n =
     if value.negative then Z.neg value.significand else value.significand
@@ -25,6 +28,7 @@ let rational value =
   if value.exponent >= 0 then Q.of_bigint (Z.shift_left n value.exponent)
   else Q.make n (Z.shift_left Z.one (-value.exponent))
 
+(* Round and encode a rational as binary80 using the x87 control word. *)
 let encode ?(negative_zero = false) ~control value =
   let negative = Q.sign value < 0 || (Q.equal value Q.zero && negative_zero) in
   let n = Z.abs (Q.num value) and d = Q.den value in
@@ -72,8 +76,10 @@ let encode ?(negative_zero = false) ~control value =
     (Char.chr ((exponent lsr 8) lor if negative then 128 else 0));
   Bytes.to_string bytes
 
+(* Convert a signed 64-bit integer to binary80. *)
 let of_int64 value = encode ~control:0x37f (Q.of_bigint (Z.of_int64 value))
 
+(* Apply an arithmetic operation to binary80 values with x87 rounding. *)
 let binary ~control ~operation a b =
   let left = decode a and right = decode b in
   let negative_zero =
@@ -109,8 +115,10 @@ let binary ~control ~operation a b =
   in
   encode ~negative_zero ~control value
 
+(* Compare two finite binary80 values. *)
 let compare a b = Q.compare (rational (decode a)) (rational (decode b))
 
+(* Convert a finite IEEE binary floating-point value to binary80. *)
 let of_ieee bytes =
   let bits = Z.of_bits bytes in
   let fraction, exponent_bits, bias =
@@ -133,6 +141,7 @@ let of_ieee bytes =
   in
   encode ~negative_zero:value.negative ~control:0x37f (rational value)
 
+(* Round and convert binary80 to an IEEE floating-point encoding. *)
 let to_ieee ~control ~size bytes =
   let fraction, exponent_bits, bias, precision =
     if size = 4 then (23, 8, 127, 0) else (52, 11, 1023, 2)
@@ -160,6 +169,7 @@ let to_ieee ~control ~size bytes =
   String.init size (fun index ->
       Char.chr (Z.to_int (Z.extract bits (index * 8) 8)))
 
+(* Round a binary80 value to a signed integer of the requested width. *)
 let to_integer ~control ~bits bytes =
   let value = rational (decode bytes) in
   let n = Q.num value and d = Q.den value in

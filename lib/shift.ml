@@ -4,6 +4,7 @@
 open Base
 module W = Stdlib.Int32
 
+(* Execute a group-2 shift or rotate and update its affected flags. *)
 let execute ~width ~kind ~count ~flags value =
   let bits = Width.bits width in
   let masked_count = count land 31 in

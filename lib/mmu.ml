@@ -5,17 +5,22 @@
 open Base
 module W = Stdlib.Int32
 
+(* The kind of memory access being translated. *)
 type access = Read | Write | Execute
 
 exception Page_fault of { address : int32; error : int }
 
+(* Test whether a bit mask is set in a 32-bit value. *)
 let bit value mask = not (W.equal (W.logand value mask) 0l)
 
+(* Walk the guest page tables and translate a linear address. *)
 let translate bus ~cr0 ~cr3 ~cr4 ~user ~access address =
   if not (bit cr0 Int32.min_value) then address
   else
     let writing = Poly.equal access Write in
     let error = (if writing then 2 else 0) lor if user then 4 else 0 in
+    (* Preserve the original linear address and encode the access and failure
+       cause in the x86 page-fault error code. *)
     let fault ~present ~reserved =
       raise
         (Page_fault
@@ -27,6 +32,8 @@ let translate bus ~cr0 ~cr3 ~cr4 ~user ~access address =
                lor if reserved then 8 else 0);
            })
     in
+    (* Watch each table page before reading it so later writes invalidate
+       translations derived from this walk. *)
     let read entry_address =
       Physical_bus.watch_page_table bus entry_address;
       let entry = Physical_bus.read bus ~width:Dword entry_address in
@@ -38,6 +45,7 @@ let translate bus ~cr0 ~cr3 ~cr4 ~user ~access address =
         Physical_bus.write bus ~width:Dword entry_address (W.logor entry mask)
     in
     let permission writable accessible =
+      (* CR0.WP also enforces read-only pages for supervisor writes. *)
       if
         (user && not accessible)
         || (writing && (not writable) && (user || bit cr0 0x10000l))
@@ -45,6 +53,7 @@ let translate bus ~cr0 ~cr3 ~cr4 ~user ~access address =
     in
     let leaf entry_address entry ~writable ~accessible ~mask =
       permission writable accessible;
+      (* Set accessed on every successful leaf access and dirty on writes. *)
       mark entry_address entry (if writing then 0x60l else 0x20l);
       W.logor (W.logand entry (W.lognot mask)) (W.logand address mask)
     in
@@ -72,11 +81,14 @@ let translate bus ~cr0 ~cr3 ~cr4 ~user ~access address =
           ~accessible:(bit directory 4l && bit table 4l)
           ~mask:0xfffl)
     else
+      (* PAE entries are 64 bits, but supported physical addresses fit in the
+         low word; check the relevant reserved bits in the high word. *)
       let read64 entry_address =
         let low = read entry_address in
         let high =
           Physical_bus.read bus ~width:Dword (W.add entry_address 4l)
         in
+        (* NX and physical address bits above 31 are not supported. *)
         if not (W.equal (W.logand high 0x800fffffl) 0l) then
           fault ~present:true ~reserved:true;
         low
