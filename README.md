@@ -96,7 +96,7 @@ dune exec ocaml-os -- --kernel path/to/bzImage \
 | ビット | BT/BTS/BTR/BTC、BSF/BSR | - |
 | 条件 | Jcc、SETcc、CMOVcc（全16条件） | - |
 | スタック | PUSH/POP、PUSHF/POPF、PUSHA/POPA、ENTER/LEAVE | 16-bitスタックアドレス |
-| 制御移行 | near CALL/JMP/RET、直接far JMP、LOOP系、JCXZ/JECXZ、INT/32-bit IRET | far CALL/RET、16-bit IRET |
+| 制御移行 | near CALL/JMP/RET、直接far JMP、LOOP系、JCXZ/JECXZ、INT/32-bit IRET、NOP（複数バイト含む） | far CALL/RET、16-bit IRET |
 | 文字列 | MOVS/STOS/LODS/CMPS/SCAS、REP/REPE/REPNE | INS/OUTS |
 | フラグ | CLC/STC/CMC、CLD/STD、LAHF/SAHF、CLI/STI | - |
 | アトミック | CMPXCHG、CMPXCHG8B、XADD、XCHG、LOCK prefix | 単一CPUのみ |

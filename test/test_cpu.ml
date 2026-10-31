@@ -121,3 +121,29 @@ let () =
   check (Memory.read_u16 memory ~address:15l = 0x80ff) "Final unaligned word";
   print_endline "Native RAM widths, alignment and atomic bounds tests passed"
 ;;
+
+let () =
+  List.iter
+    (fun code ->
+      let cpu, _, _ = machine (code ^ "\xf4") in
+      Cpu.set_register cpu Eax (-1l);
+      Cpu.set_register cpu Ebx 0x12345678l;
+      let flags = Cpu.eflags cpu in
+      check (Cpu.run cpu ~max_steps:1 = Budget_exhausted) "Multi-byte NOP";
+      word (Cpu.eip cpu) (Int32.of_int (String.length code));
+      word (Cpu.register cpu Eax) (-1l);
+      word (Cpu.register cpu Ebx) 0x12345678l;
+      word (Cpu.eflags cpu) flags;
+      check (Cpu.run cpu ~max_steps:1 = Halted) "Instruction after NOP")
+    [
+      "\x0f\x1f\xc0";
+      "\x0f\x1f\x00";
+      "\x66\x2e\x0f\x1f\x84\x00\x00\x00\x00\x00";
+      "\x67\x0f\x1f\x06\xff\xff";
+    ];
+  let cpu, _, _ = machine "\xf0\x0f\x1f\x00" in
+  (match Cpu.run cpu ~max_steps:1 with
+  | Fault (System_fault { message = "Guest exception #6"; _ }) -> ()
+  | _ -> failwith "LOCK NOP must raise #UD");
+  word (Cpu.eip cpu) 0l;
+  print_endline "Multi-byte NOP decoding, inert operands and LOCK tests passed"

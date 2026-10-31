@@ -675,6 +675,9 @@ let step t =
                     second ~equal:Int.equal)
           then System_state.fault 6 0;
           match second with
+          | 0x1f ->
+              let operands = decode () in
+              operands.extension = 0
           | 0xc7 -> (
               let operands = decode () in
               match (operands.extension, operands.rm) with
