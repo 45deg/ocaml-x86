@@ -4,15 +4,8 @@
 open Base
 module W = Stdlib.Int32
 
-type t =
-  | Register of Register.t
-  | Memory of int32
-
-type modrm =
-  { segment : int
-  ; extension : int
-  ; rm : t
-  }
+type t = Register of Register.t | Memory of int32
+type modrm = { segment : int; extension : int; rm : t }
 
 let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
   let encoding = byte () in
@@ -22,10 +15,8 @@ let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
   let reg n = register (Register.of_encoding n) in
   let segment = ref 3 in
   let rm =
-    if mode = 3
-    then Register (Register.of_encoding rm)
-    else if Poly.equal address_size Width.Word
-    then (
+    if mode = 3 then Register (Register.of_encoding rm)
+    else if Poly.equal address_size Width.Word then (
       let short () =
         let low = byte () in
         let high = byte () in
@@ -50,20 +41,20 @@ let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
         | _ -> short ()
       in
       Memory (Width.truncate Width.Word (W.add base displacement)))
-    else (
+    else
       let base =
-        if rm = 4
-        then (
+        if rm = 4 then (
           let sib = byte () in
           let scale = sib lsr 6 in
           let index = (sib lsr 3) land 7 in
           let base = sib land 7 in
           if base = 4 || (base = 5 && mode <> 0) then segment := 2;
           let base = if base = 5 && mode = 0 then word () else reg base in
-          let index = if index = 4 then 0l else W.shift_left (reg index) scale in
+          let index =
+            if index = 4 then 0l else W.shift_left (reg index) scale
+          in
           W.add base index)
-        else if rm = 5 && mode = 0
-        then word ()
+        else if rm = 5 && mode = 0 then word ()
         else (
           if rm = 5 then segment := 2;
           reg rm)
@@ -72,11 +63,10 @@ let decode ?(address_size = Width.Dword) ~byte ~word ~register () =
         match mode with
         | 0 -> 0l
         | 1 ->
-          let value = byte () in
-          W.of_int (if value >= 128 then value - 256 else value)
+            let value = byte () in
+            W.of_int (if value >= 128 then value - 256 else value)
         | _ -> word ()
       in
-      Memory (W.add base displacement))
+      Memory (W.add base displacement)
   in
   { segment = !segment; extension; rm }
-;;

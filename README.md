@@ -9,7 +9,7 @@ CPUの実行にハードウェア仮想化や既存エミュレータを使わ�
 64-bitのUnix系ホストとopamが必要。OCaml 5.2以上、Dune 3.17以上、
 Base v0.17以上、Zarithを使用する。検証済みの組み合わせは
 OCaml 5.5.0、Dune 3.23.1、Base v0.17.3。補助スクリプトはPython 3.9以上を使う。
-OCamlFormat 0.29.0のJane Streetプロファイルを使う。
+OCamlFormat 0.29.0の`conventional`プロファイルを使う。
 
 ```sh
 opam install . --deps-only

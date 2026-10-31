@@ -1,12 +1,4 @@
-type t =
-  | Eax
-  | Ecx
-  | Edx
-  | Ebx
-  | Esp
-  | Ebp
-  | Esi
-  | Edi
+type t = Eax | Ecx | Edx | Ebx | Esp | Ebp | Esi | Edi
 
 let encoding = function
   | Eax -> 0
@@ -17,7 +9,6 @@ let encoding = function
   | Ebp -> 5
   | Esi -> 6
   | Edi -> 7
-;;
 
 let of_encoding = function
   | 0 -> Eax
@@ -29,4 +20,3 @@ let of_encoding = function
   | 6 -> Esi
   | 7 -> Edi
   | _ -> invalid_arg "Register.of_encoding"
-;;
