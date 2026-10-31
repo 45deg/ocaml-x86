@@ -2,7 +2,7 @@
 set -eu
 
 cd "$(dirname "$0")/.."
-exec dune exec ocaml-os -- \
+exec dune exec ocaml-x86 -- \
   --kernel fixtures/alpine/vmlinuz-lts \
   --initrd fixtures/alpine/initramfs.cpio.gz \
   --memory-mib 512 \

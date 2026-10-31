@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let make code address =
   let memory = Memory.create ~size:8192 in

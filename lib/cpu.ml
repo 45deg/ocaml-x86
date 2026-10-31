@@ -424,7 +424,7 @@ let step t =
             | (0xd8 | 0xdc | 0xda | 0xde), operation, Operand.Memory address ->
                 let value =
                   if instruction = 0xd8 || instruction = 0xdc then
-                    Extended.of_ieee
+                    Fpu.load_ieee t.fpu
                       (load address (if instruction = 0xd8 then 4 else 8))
                   else
                     let width =
@@ -484,6 +484,9 @@ let step t =
             | 0xd9, 5, Operand.Register Esi ->
                 Fpu.push t.fpu (Extended.of_int64 0L);
                 true
+            | 0xd9, 7, Operand.Register Eax ->
+                Fpu.remainder t.fpu;
+                true
             | 0xd9, 0, Operand.Register r ->
                 Fpu.push t.fpu (Fpu.get t.fpu (Register.encoding r));
                 true
@@ -522,7 +525,7 @@ let step t =
                 true
             | (0xd9 | 0xdd), 0, Operand.Memory address ->
                 Fpu.push t.fpu
-                  (Extended.of_ieee
+                  (Fpu.load_ieee t.fpu
                      (load address (if instruction = 0xd9 then 4 else 8)));
                 true
             | (0xd9 | 0xdd), ((2 | 3) as operation), Operand.Memory address ->

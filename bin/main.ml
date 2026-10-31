@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let () =
   let input = ref None in
@@ -49,10 +49,10 @@ let () =
       match !input with
       | None -> input := Some path
       | Some _ -> raise (Arg.Bad "Only one raw binary is accepted"))
-    "ocaml-os [options] (raw-32-bit.bin | --kernel bzImage)";
+    "ocaml-x86 [options] (raw-32-bit.bin | --kernel bzImage)";
   if Option.is_none !input && Option.is_none !kernel then (
     prerr_endline
-      "Usage: ocaml-os [options] (raw-32-bit.bin | --kernel bzImage)";
+      "Usage: ocaml-x86 [options] (raw-32-bit.bin | --kernel bzImage)";
     prerr_endline "Use --help to list options.";
     exit 2);
   if !progress_every < 0 then (

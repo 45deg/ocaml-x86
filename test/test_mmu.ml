@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let check b message = if not b then failwith message
 let word a b = check (a = b) (Printf.sprintf "%lx <> %lx" a b)

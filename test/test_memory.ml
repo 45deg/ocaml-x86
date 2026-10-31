@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let check condition message = if not condition then failwith message
 

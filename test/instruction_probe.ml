@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let decode_hex text =
   String.init

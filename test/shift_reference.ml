@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 (* Group-2 shifts and rotates. Count is masked to five bits; zero effective
     count preserves all flags. Undefined OF/AF values are preserved. *)
 

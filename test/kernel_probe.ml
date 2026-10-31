@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let () =
   let kernel = In_channel.with_open_bin Sys.argv.(1) In_channel.input_all in

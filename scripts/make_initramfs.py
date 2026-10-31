@@ -54,7 +54,7 @@ def build(source):
     add("dev/console", stat.S_IFCHR | 0o600, major=5, minor=1)
     add("dev/null", stat.S_IFCHR | 0o666, major=1, minor=3)
     add("dev/ttyS0", stat.S_IFCHR | 0o600, major=4, minor=64)
-    add("init", stat.S_IFREG | 0o755, b"#!/bin/sh\nmount -t proc proc /proc\nmount -t sysfs sysfs /sys\necho OCAML_OS_READY\nexec /bin/sh -i\n")
+    add("init", stat.S_IFREG | 0o755, b"#!/bin/sh\nmount -t proc proc /proc\nmount -t sysfs sysfs /sys\necho OCAML_X86_READY\nexec /bin/sh -i\n")
     add("TRAILER!!!", 0)
     return output.getvalue()
 

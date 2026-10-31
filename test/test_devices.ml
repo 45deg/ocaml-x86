@@ -1,4 +1,4 @@
-open Ocaml_os
+open Ocaml_x86
 
 let () =
   let output = Buffer.create 16 in

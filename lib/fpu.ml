@@ -48,6 +48,17 @@ let set_control t value = t.control <- value land 0x1f3f lor 0x40
 let status t = t.status
 (* Clear the x87 exception status bits. *)
 let clear_exceptions t = t.status <- t.status land 0x7f00
+
+(* Convert IEEE operands for ocamlopt-oriented guests. A masked signaling NaN
+   becomes a quiet NaN and sets IE; unmasked invalid exceptions are unsupported. *)
+let load_ieee t bytes =
+  let signaling = Extended.ieee_signaling_nan bytes in
+  if signaling && t.control land 1 = 0 then
+    raise (Extended.Unsupported "x87 unmasked signaling NaN load");
+  let value = Extended.of_ieee bytes in
+  if signaling then t.status <- t.status lor 1;
+  value
+
 (* Return the saved environment size for the operand width. *)
 let environment_size = function Width.Word -> 14 | _ -> 28
 
@@ -191,6 +202,19 @@ let compare t value =
   t.status <-
     (t.status land lnot 0x4700
     lor if order < 0 then 0x100 else if order = 0 then 0x4000 else 0)
+
+(* FPREM updates ST(0) and C0/C1/C2/C3 without popping either stack operand. *)
+let remainder t =
+  let result = Extended.remainder (get t 0) (get t 1) in
+  set t 0 result.value;
+  let conditions =
+    if result.complete then
+      ((result.quotient_bits land 4) lsl 6)
+      lor ((result.quotient_bits land 2) lsl 13)
+      lor ((result.quotient_bits land 1) lsl 9)
+    else 0x400
+  in
+  t.status <- t.status land lnot 0x4700 lor conditions
 
 (* Record metadata for the most recent x87 instruction and data operand. *)
 let record t ~instruction ~code_segment ~opcode ~data =

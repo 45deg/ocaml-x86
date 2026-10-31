@@ -1,0 +1,319 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1284" viewBox="0 0 1000 1284" role="img" aria-labelledby="title desc">
+<title id="title">ocaml-x86 命令対応表</title>
+<desc id="desc">カテゴリ別の命令グリッド。✓ 緑は対応、△ 黄は部分対応、— グレーは未対応。保護モードの8/16/32-bitが対象。</desc>
+<rect width="1000" height="1284" fill="white"/>
+<style>text{font-family:system-ui,sans-serif;fill:#222}.instruction{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}.category{font-size:12px;font-weight:600}</style>
+<text x="12" y="24" font-size="18" font-weight="600">命令対応表</text>
+<rect x="650" y="8" width="92" height="24" fill="#d9eddf"/><text x="658" y="24" font-size="12" style="fill:#214c32">✓ 対応</text>
+<rect x="750" y="8" width="112" height="24" fill="#fff0b8"/><text x="758" y="24" font-size="12" style="fill:#584400">△ 部分対応</text>
+<rect x="882" y="8" width="92" height="24" fill="#e7e9eb"/><text x="890" y="24" font-size="12" style="fill:#424950">— 未対応</text>
+<text x="12" y="47" font-size="11">保護モード 8/16/32-bit</text>
+<path d="M12 56H988" stroke="#ddd"/>
+<text class="category" x="12" y="75">データ転送</text>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="160" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="74" style="fill:#214c32">✓ MOV</text></g>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="264" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="74" style="fill:#214c32">✓ MOVSX</text></g>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="368" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="74" style="fill:#214c32">✓ MOVZX</text></g>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="472" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="74" style="fill:#214c32">✓ LEA</text></g>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="576" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="74" style="fill:#214c32">✓ XCHG</text></g>
+<g><title>✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。</title><rect x="680" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="74" style="fill:#214c32">✓ XLAT</text></g>
+<g><title>✓ 対応: 符号拡張。オペランドサイズに従う。</title><rect x="784" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="74" style="fill:#214c32">✓ CBW</text></g>
+<g><title>✓ 対応: 符号拡張。オペランドサイズに従う。</title><rect x="888" y="60" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="74" style="fill:#214c32">✓ CWDE</text></g>
+<g><title>✓ 対応: 符号拡張。オペランドサイズに従う。</title><rect x="160" y="84" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="98" style="fill:#214c32">✓ CWD</text></g>
+<g><title>✓ 対応: 符号拡張。オペランドサイズに従う。</title><rect x="264" y="84" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="98" style="fill:#214c32">✓ CDQ</text></g>
+<g><title>△ 部分対応: 32-bitのみ。16-bit BSWAPは未対応。</title><rect x="368" y="84" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="98" style="fill:#584400">△ BSWAP</text></g>
+<g><title>— 未対応: far pointer loadのデコードは未実装。</title><rect x="472" y="84" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="477" y="98" style="fill:#424950">— LDS</text></g>
+<g><title>— 未対応: far pointer loadのデコードは未実装。</title><rect x="576" y="84" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="581" y="98" style="fill:#424950">— LES</text></g>
+<g><title>— 未対応: far pointer loadのデコードは未実装。</title><rect x="680" y="84" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="98" style="fill:#424950">— LFS</text></g>
+<g><title>— 未対応: far pointer loadのデコードは未実装。</title><rect x="784" y="84" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="98" style="fill:#424950">— LGS</text></g>
+<g><title>— 未対応: far pointer loadのデコードは未実装。</title><rect x="888" y="84" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="98" style="fill:#424950">— LSS</text></g>
+<path d="M12 116H988" stroke="#ddd"/>
+<text class="category" x="12" y="135">算術・論理</text>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="160" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="134" style="fill:#214c32">✓ ADD</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="264" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="134" style="fill:#214c32">✓ ADC</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="368" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="134" style="fill:#214c32">✓ SUB</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="472" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="134" style="fill:#214c32">✓ SBB</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="576" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="134" style="fill:#214c32">✓ CMP</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="680" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="134" style="fill:#214c32">✓ AND</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="784" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="134" style="fill:#214c32">✓ OR</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="888" y="120" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="134" style="fill:#214c32">✓ XOR</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="160" y="144" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="158" style="fill:#214c32">✓ TEST</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="264" y="144" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="158" style="fill:#214c32">✓ INC</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="368" y="144" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="158" style="fill:#214c32">✓ DEC</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="472" y="144" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="158" style="fill:#214c32">✓ NEG</text></g>
+<g><title>✓ 対応: 8/16/32-bitの整数演算とフラグ更新。</title><rect x="576" y="144" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="158" style="fill:#214c32">✓ NOT</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="680" y="144" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="158" style="fill:#424950">— DAA</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="784" y="144" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="158" style="fill:#424950">— DAS</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="888" y="144" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="158" style="fill:#424950">— AAA</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="160" y="168" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="182" style="fill:#424950">— AAS</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="264" y="168" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="182" style="fill:#424950">— AAM</text></g>
+<g><title>— 未対応: BCD・ASCII調整命令は未実装。</title><rect x="368" y="168" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="373" y="182" style="fill:#424950">— AAD</text></g>
+<path d="M12 200H988" stroke="#ddd"/>
+<text class="category" x="12" y="219">乗除算</text>
+<g><title>✓ 対応: 8/16/32-bit。除算例外を含む。</title><rect x="160" y="204" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="218" style="fill:#214c32">✓ MUL</text></g>
+<g><title>✓ 対応: 8/16/32-bit。除算例外を含む。</title><rect x="264" y="204" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="218" style="fill:#214c32">✓ DIV</text></g>
+<g><title>✓ 対応: 8/16/32-bit。除算例外を含む。</title><rect x="368" y="204" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="218" style="fill:#214c32">✓ IDIV</text></g>
+<g><title>✓ 対応: 1 / 2 / 3オペランド形式。</title><rect x="472" y="204" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="218" style="fill:#214c32">✓ IMUL</text></g>
+<path d="M12 236H988" stroke="#ddd"/>
+<text class="category" x="12" y="255">シフト・回転</text>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="160" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="254" style="fill:#214c32">✓ SHL/SAL</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="264" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="254" style="fill:#214c32">✓ SHR</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="368" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="254" style="fill:#214c32">✓ SAR</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="472" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="254" style="fill:#214c32">✓ ROL</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="576" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="254" style="fill:#214c32">✓ ROR</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="680" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="254" style="fill:#214c32">✓ RCL</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="784" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="254" style="fill:#214c32">✓ RCR</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="888" y="240" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="254" style="fill:#214c32">✓ SHLD</text></g>
+<g><title>✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。</title><rect x="160" y="264" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="278" style="fill:#214c32">✓ SHRD</text></g>
+<path d="M12 296H988" stroke="#ddd"/>
+<text class="category" x="12" y="315">ビット操作</text>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="160" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="314" style="fill:#214c32">✓ BT</text></g>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="264" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="314" style="fill:#214c32">✓ BTS</text></g>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="368" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="314" style="fill:#214c32">✓ BTR</text></g>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="472" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="314" style="fill:#214c32">✓ BTC</text></g>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="576" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="314" style="fill:#214c32">✓ BSF</text></g>
+<g><title>✓ 対応: 16/32-bitのレジスタ・メモリ形式。</title><rect x="680" y="300" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="314" style="fill:#214c32">✓ BSR</text></g>
+<g><title>— 未対応: 拡張ビット操作は未実装。</title><rect x="784" y="300" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="314" style="fill:#424950">— POPCNT</text></g>
+<g><title>— 未対応: 拡張ビット操作は未実装。</title><rect x="888" y="300" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="314" style="fill:#424950">— LZCNT</text></g>
+<g><title>— 未対応: 拡張ビット操作は未実装。</title><rect x="160" y="324" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="338" style="fill:#424950">— TZCNT</text></g>
+<path d="M12 356H988" stroke="#ddd"/>
+<text class="category" x="12" y="375">条件分岐</text>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="374" style="fill:#214c32">✓ JO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="374" style="fill:#214c32">✓ JNO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="374" style="fill:#214c32">✓ JB</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="374" style="fill:#214c32">✓ JAE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="374" style="fill:#214c32">✓ JE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="374" style="fill:#214c32">✓ JNE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="374" style="fill:#214c32">✓ JBE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="360" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="374" style="fill:#214c32">✓ JA</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="398" style="fill:#214c32">✓ JS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="398" style="fill:#214c32">✓ JNS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="398" style="fill:#214c32">✓ JP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="398" style="fill:#214c32">✓ JNP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="398" style="fill:#214c32">✓ JL</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="398" style="fill:#214c32">✓ JGE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="398" style="fill:#214c32">✓ JLE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="384" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="398" style="fill:#214c32">✓ JG</text></g>
+<path d="M12 416H988" stroke="#ddd"/>
+<text class="category" x="12" y="435">条件セット</text>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="434" style="fill:#214c32">✓ SETO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="434" style="fill:#214c32">✓ SETNO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="434" style="fill:#214c32">✓ SETB</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="434" style="fill:#214c32">✓ SETAE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="434" style="fill:#214c32">✓ SETE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="434" style="fill:#214c32">✓ SETNE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="434" style="fill:#214c32">✓ SETBE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="420" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="434" style="fill:#214c32">✓ SETA</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="458" style="fill:#214c32">✓ SETS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="458" style="fill:#214c32">✓ SETNS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="458" style="fill:#214c32">✓ SETP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="458" style="fill:#214c32">✓ SETNP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="458" style="fill:#214c32">✓ SETL</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="458" style="fill:#214c32">✓ SETGE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="458" style="fill:#214c32">✓ SETLE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="444" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="458" style="fill:#214c32">✓ SETG</text></g>
+<path d="M12 476H988" stroke="#ddd"/>
+<text class="category" x="12" y="495">条件転送</text>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="494" style="fill:#214c32">✓ CMOVO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="494" style="fill:#214c32">✓ CMOVNO</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="494" style="fill:#214c32">✓ CMOVB</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="494" style="fill:#214c32">✓ CMOVAE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="494" style="fill:#214c32">✓ CMOVE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="494" style="fill:#214c32">✓ CMOVNE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="494" style="fill:#214c32">✓ CMOVBE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="480" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="494" style="fill:#214c32">✓ CMOVA</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="160" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="518" style="fill:#214c32">✓ CMOVS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="264" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="518" style="fill:#214c32">✓ CMOVNS</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="368" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="518" style="fill:#214c32">✓ CMOVP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="472" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="518" style="fill:#214c32">✓ CMOVNP</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="576" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="518" style="fill:#214c32">✓ CMOVL</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="680" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="518" style="fill:#214c32">✓ CMOVGE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="784" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="518" style="fill:#214c32">✓ CMOVLE</text></g>
+<g><title>✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。</title><rect x="888" y="504" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="518" style="fill:#214c32">✓ CMOVG</text></g>
+<path d="M12 536H988" stroke="#ddd"/>
+<text class="category" x="12" y="555">スタック</text>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="160" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="554" style="fill:#214c32">✓ PUSH</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="264" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="554" style="fill:#214c32">✓ POP</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="368" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="554" style="fill:#214c32">✓ PUSHF/PUSHFD</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="472" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="554" style="fill:#214c32">✓ POPF/POPFD</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="576" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="554" style="fill:#214c32">✓ PUSHA/PUSHAD</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="680" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="554" style="fill:#214c32">✓ POPA/POPAD</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="784" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="554" style="fill:#214c32">✓ ENTER</text></g>
+<g><title>✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。</title><rect x="888" y="540" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="554" style="fill:#214c32">✓ LEAVE</text></g>
+<path d="M12 572H988" stroke="#ddd"/>
+<text class="category" x="12" y="591">制御移行</text>
+<g><title>△ 部分対応: nearの直接・間接形式に対応。far CALL・コールゲートは未対応。</title><rect x="160" y="576" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="590" style="fill:#584400">△ CALL</text></g>
+<g><title>△ 部分対応: nearの直接・間接、即値の直接far JMPに対応。間接far JMP・タスク切替は未対応。</title><rect x="264" y="576" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="590" style="fill:#584400">△ JMP</text></g>
+<g><title>△ 部分対応: near RETのみ。即値によるスタック調整に対応。far RETは未対応。</title><rect x="368" y="576" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="590" style="fill:#584400">△ RET</text></g>
+<g><title>✓ 対応: アドレスサイズに従いCXまたはECXを使用。</title><rect x="472" y="576" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="590" style="fill:#214c32">✓ LOOP</text></g>
+<g><title>✓ 対応: アドレスサイズに従いCXまたはECXを使用。</title><rect x="576" y="576" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="590" style="fill:#214c32">✓ LOOPE/LOOPZ</text></g>
+<g><title>✓ 対応: アドレスサイズに従いCXまたはECXを使用。</title><rect x="680" y="576" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="590" style="fill:#214c32" textLength="90" lengthAdjust="spacingAndGlyphs">✓ LOOPNE/LOOPNZ</text></g>
+<g><title>✓ 対応: アドレスサイズに従いCXまたはECXを使用。</title><rect x="784" y="576" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="590" style="fill:#214c32">✓ JCXZ</text></g>
+<g><title>✓ 対応: アドレスサイズに従いCXまたはECXを使用。</title><rect x="888" y="576" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="590" style="fill:#214c32">✓ JECXZ</text></g>
+<g><title>✓ 対応: IDTによるソフトウェア割り込み。INTOはOFを検査。</title><rect x="160" y="600" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="614" style="fill:#214c32">✓ INT</text></g>
+<g><title>✓ 対応: IDTによるソフトウェア割り込み。INTOはOFを検査。</title><rect x="264" y="600" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="614" style="fill:#214c32">✓ INT3</text></g>
+<g><title>✓ 対応: IDTによるソフトウェア割り込み。INTOはOFを検査。</title><rect x="368" y="600" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="614" style="fill:#214c32">✓ INTO</text></g>
+<g><title>△ 部分対応: 32-bit IRETと特権復帰。16-bit・タスク復帰・VM86復帰は未対応。</title><rect x="472" y="600" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="614" style="fill:#584400">△ IRET/IRETD</text></g>
+<g><title>✓ 対応: 単一バイト・複数バイトNOP。</title><rect x="576" y="600" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="614" style="fill:#214c32">✓ NOP</text></g>
+<g><title>— 未対応: これらの命令は未実装。SYSENTER用MSRの保存とは別。</title><rect x="680" y="600" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="614" style="fill:#424950">— BOUND</text></g>
+<g><title>— 未対応: これらの命令は未実装。SYSENTER用MSRの保存とは別。</title><rect x="784" y="600" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="614" style="fill:#424950">— UD2</text></g>
+<g><title>— 未対応: これらの命令は未実装。SYSENTER用MSRの保存とは別。</title><rect x="888" y="600" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="614" style="fill:#424950">— SYSENTER</text></g>
+<g><title>— 未対応: これらの命令は未実装。SYSENTER用MSRの保存とは別。</title><rect x="160" y="624" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="638" style="fill:#424950">— SYSEXIT</text></g>
+<path d="M12 656H988" stroke="#ddd"/>
+<text class="category" x="12" y="675">文字列・</text>
+<text class="category" x="12" y="692">プレフィックス</text>
+<g><title>✓ 対応: byte / word / dword。16/32-bitアドレス指定。</title><rect x="160" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="674" style="fill:#214c32">✓ MOVS</text></g>
+<g><title>✓ 対応: byte / word / dword。16/32-bitアドレス指定。</title><rect x="264" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="674" style="fill:#214c32">✓ STOS</text></g>
+<g><title>✓ 対応: byte / word / dword。16/32-bitアドレス指定。</title><rect x="368" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="674" style="fill:#214c32">✓ LODS</text></g>
+<g><title>✓ 対応: byte / word / dword。16/32-bitアドレス指定。</title><rect x="472" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="674" style="fill:#214c32">✓ CMPS</text></g>
+<g><title>✓ 対応: byte / word / dword。16/32-bitアドレス指定。</title><rect x="576" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="674" style="fill:#214c32">✓ SCAS</text></g>
+<g><title>✓ 対応: 対応文字列命令の反復。比較命令ではZFによる停止を処理。</title><rect x="680" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="674" style="fill:#214c32">✓ REP</text></g>
+<g><title>✓ 対応: 対応文字列命令の反復。比較命令ではZFによる停止を処理。</title><rect x="784" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="674" style="fill:#214c32">✓ REPE/REPZ</text></g>
+<g><title>✓ 対応: 対応文字列命令の反復。比較命令ではZFによる停止を処理。</title><rect x="888" y="660" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="674" style="fill:#214c32">✓ REPNE/REPNZ</text></g>
+<g><title>— 未対応: 文字列ポートI/Oは未実装。</title><rect x="160" y="684" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="698" style="fill:#424950">— INS</text></g>
+<g><title>— 未対応: 文字列ポートI/Oは未実装。</title><rect x="264" y="684" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="698" style="fill:#424950">— OUTS</text></g>
+<path d="M12 716H988" stroke="#ddd"/>
+<text class="category" x="12" y="735">フラグ</text>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="160" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="734" style="fill:#214c32">✓ CLC</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="264" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="734" style="fill:#214c32">✓ STC</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="368" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="734" style="fill:#214c32">✓ CMC</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="472" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="734" style="fill:#214c32">✓ CLD</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="576" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="734" style="fill:#214c32">✓ STD</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="680" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="734" style="fill:#214c32">✓ LAHF</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="784" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="734" style="fill:#214c32">✓ SAHF</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="888" y="720" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="734" style="fill:#214c32">✓ CLI</text></g>
+<g><title>✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。</title><rect x="160" y="744" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="758" style="fill:#214c32">✓ STI</text></g>
+<path d="M12 776H988" stroke="#ddd"/>
+<text class="category" x="12" y="795">アトミック</text>
+<g><title>✓ 対応: 単一CPUのインタプリタ上で実装。</title><rect x="160" y="780" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="794" style="fill:#214c32">✓ CMPXCHG</text></g>
+<g><title>✓ 対応: 単一CPUのインタプリタ上で実装。</title><rect x="264" y="780" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="794" style="fill:#214c32">✓ CMPXCHG8B</text></g>
+<g><title>✓ 対応: 単一CPUのインタプリタ上で実装。</title><rect x="368" y="780" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="794" style="fill:#214c32">✓ XADD</text></g>
+<g><title>✓ 対応: 対応するメモリ更新命令に対して検査。複数CPUは対象外。</title><rect x="472" y="780" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="794" style="fill:#214c32">✓ LOCK</text></g>
+<path d="M12 812H988" stroke="#ddd"/>
+<text class="category" x="12" y="831">I/O・停止</text>
+<g><title>✓ 対応: 8/16/32-bit、即値またはDXポート。I/O権限検査。</title><rect x="160" y="816" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="830" style="fill:#214c32">✓ IN</text></g>
+<g><title>✓ 対応: 8/16/32-bit、即値またはDXポート。I/O権限検査。</title><rect x="264" y="816" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="830" style="fill:#214c32">✓ OUT</text></g>
+<g><title>✓ 対応: 特権検査と外部IRQによる復帰。</title><rect x="368" y="816" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="830" style="fill:#214c32">✓ HLT</text></g>
+<path d="M12 848H988" stroke="#ddd"/>
+<text class="category" x="12" y="867">システム</text>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="160" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="866" style="fill:#214c32">✓ SGDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="264" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="866" style="fill:#214c32">✓ SIDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="368" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="866" style="fill:#214c32">✓ LGDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="472" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="866" style="fill:#214c32">✓ LIDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="576" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="866" style="fill:#214c32">✓ SLDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="680" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="866" style="fill:#214c32">✓ LLDT</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="784" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="866" style="fill:#214c32">✓ STR</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="888" y="852" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="866" style="fill:#214c32">✓ LTR</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="160" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="890" style="fill:#214c32">✓ VERR</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="264" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="890" style="fill:#214c32">✓ VERW</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="368" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="890" style="fill:#214c32">✓ LAR</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="472" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="890" style="fill:#214c32">✓ LSL</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="576" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="890" style="fill:#214c32">✓ SMSW</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="680" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="890" style="fill:#214c32">✓ LMSW</text></g>
+<g><title>✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。</title><rect x="784" y="876" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="890" style="fill:#214c32">✓ CLTS</text></g>
+<g><title>△ 部分対応: CR0/2/3/4の転送。実装対象の保護モード・legacy/PAEページングに限定。</title><rect x="888" y="876" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="893" y="890" style="fill:#584400">△ MOV_CR</text></g>
+<g><title>△ 部分対応: debugレジスタの読み書きに対応。DR7でハードウェアブレークポイントを有効化する操作は未対応。</title><rect x="160" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="914" style="fill:#584400">△ MOV_DR</text></g>
+<g><title>△ 部分対応: TLB全体の無効化として実装。ページ単位の無効化ではない。</title><rect x="264" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="914" style="fill:#584400">△ INVLPG</text></g>
+<g><title>△ 部分対応: 固定のCPU情報。基本leaf 0/1などの限定情報を返す。</title><rect x="368" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="914" style="fill:#584400">△ CPUID</text></g>
+<g><title>△ 部分対応: 仮想サイクル数を返す。ホストの実クロックではない。</title><rect x="472" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="914" style="fill:#584400">△ RDTSC</text></g>
+<g><title>△ 部分対応: TSC・限定MSRのみ。SYSENTER用MSRは保存するが、SYSENTER/SYSEXIT命令は未対応。</title><rect x="576" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="914" style="fill:#584400">△ RDMSR</text></g>
+<g><title>△ 部分対応: TSC・限定MSRのみ。SYSENTER用MSRは保存するが、SYSENTER/SYSEXIT命令は未対応。</title><rect x="680" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="914" style="fill:#584400">△ WRMSR</text></g>
+<g><title>△ 部分対応: 特権検査のみ。キャッシュ動作はモデル化していない。</title><rect x="784" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="789" y="914" style="fill:#584400">△ INVD</text></g>
+<g><title>△ 部分対応: 特権検査のみ。キャッシュ動作はモデル化していない。</title><rect x="888" y="900" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="893" y="914" style="fill:#584400">△ WBINVD</text></g>
+<g><title>— 未対応: パフォーマンスカウンタ・SMMは未実装。</title><rect x="160" y="924" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="938" style="fill:#424950">— RDPMC</text></g>
+<g><title>— 未対応: パフォーマンスカウンタ・SMMは未実装。</title><rect x="264" y="924" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="938" style="fill:#424950">— RSM</text></g>
+<path d="M12 956H988" stroke="#ddd"/>
+<text class="category" x="12" y="975">x87 転送・スタック</text>
+<g><title>△ 部分対応: レジスタ・メモリ転送。NaN・±∞・subnormalのロード／ストアを含む。変換レンジ外や一部の非有限値表現・非マスク例外は未対応。</title><rect x="160" y="960" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="974" style="fill:#584400">△ FLD</text></g>
+<g><title>△ 部分対応: レジスタ・メモリ転送。NaN・±∞・subnormalのロード／ストアを含む。変換レンジ外や一部の非有限値表現・非マスク例外は未対応。</title><rect x="264" y="960" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="974" style="fill:#584400">△ FST</text></g>
+<g><title>△ 部分対応: レジスタ・メモリ転送。NaN・±∞・subnormalのロード／ストアを含む。変換レンジ外や一部の非有限値表現・非マスク例外は未対応。</title><rect x="368" y="960" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="974" style="fill:#584400">△ FSTP</text></g>
+<g><title>✓ 対応: 16/32/64-bit符号付き整数のロード。</title><rect x="472" y="960" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="974" style="fill:#214c32">✓ FILD</text></g>
+<g><title>△ 部分対応: FISTは16/32-bit、FISTPは16/32/64-bit。丸めに対応、変換オーバーフローは未対応。</title><rect x="576" y="960" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="974" style="fill:#584400">△ FIST</text></g>
+<g><title>△ 部分対応: FISTは16/32-bit、FISTPは16/32/64-bit。丸めに対応、変換オーバーフローは未対応。</title><rect x="680" y="960" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="974" style="fill:#584400">△ FISTP</text></g>
+<g><title>✓ 対応: x87スタックレジスタの交換・解放。</title><rect x="784" y="960" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="974" style="fill:#214c32">✓ FXCH</text></g>
+<g><title>✓ 対応: x87スタックレジスタの交換・解放。</title><rect x="888" y="960" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="974" style="fill:#214c32">✓ FFREE</text></g>
+<g><title>— 未対応: BCD転送・切り捨て整数ストアは未実装。</title><rect x="160" y="984" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="998" style="fill:#424950">— FBLD</text></g>
+<g><title>— 未対応: BCD転送・切り捨て整数ストアは未実装。</title><rect x="264" y="984" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="998" style="fill:#424950">— FBSTP</text></g>
+<g><title>— 未対応: BCD転送・切り捨て整数ストアは未実装。</title><rect x="368" y="984" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="373" y="998" style="fill:#424950">— FISTTP</text></g>
+<path d="M12 1016H988" stroke="#ddd"/>
+<text class="category" x="12" y="1035">x87 演算・比較</text>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="160" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="1034" style="fill:#584400">△ FADD</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="264" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="1034" style="fill:#584400">△ FADDP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="368" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="1034" style="fill:#584400">△ FIADD</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="472" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="1034" style="fill:#584400">△ FMUL</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="576" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="1034" style="fill:#584400">△ FMULP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="680" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="1034" style="fill:#584400">△ FIMUL</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="784" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="789" y="1034" style="fill:#584400">△ FSUB</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="888" y="1020" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="893" y="1034" style="fill:#584400">△ FSUBP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="160" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="1058" style="fill:#584400">△ FSUBR</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="264" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="1058" style="fill:#584400">△ FSUBRP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="368" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="1058" style="fill:#584400">△ FISUB</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="472" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="1058" style="fill:#584400">△ FISUBR</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="576" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="1058" style="fill:#584400">△ FDIV</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="680" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="1058" style="fill:#584400">△ FDIVP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="784" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="789" y="1058" style="fill:#584400">△ FDIVR</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="888" y="1044" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="893" y="1058" style="fill:#584400">△ FDIVRP</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="160" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="1082" style="fill:#584400">△ FIDIV</text></g>
+<g><title>△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。</title><rect x="264" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="1082" style="fill:#584400">△ FIDIVR</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="368" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="1082" style="fill:#584400">△ FCOM</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="472" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="1082" style="fill:#584400">△ FCOMP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="576" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="1082" style="fill:#584400">△ FCOMPP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="680" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="1082" style="fill:#584400">△ FICOM</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="784" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="789" y="1082" style="fill:#584400">△ FICOMP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="888" y="1068" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="893" y="1082" style="fill:#584400">△ FUCOM</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="160" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="165" y="1106" style="fill:#584400">△ FUCOMP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="264" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="269" y="1106" style="fill:#584400">△ FUCOMPP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="368" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="1106" style="fill:#584400">△ FCOMI</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="472" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="1106" style="fill:#584400">△ FCOMIP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="576" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="581" y="1106" style="fill:#584400">△ FUCOMI</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="680" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="685" y="1106" style="fill:#584400">△ FUCOMIP</text></g>
+<g><title>△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。</title><rect x="784" y="1092" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="789" y="1106" style="fill:#584400">△ FTST</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="888" y="1092" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="1106" style="fill:#214c32">✓ FCMOVB</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="160" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="1130" style="fill:#214c32">✓ FCMOVE</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="264" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="1130" style="fill:#214c32">✓ FCMOVBE</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="368" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="1130" style="fill:#214c32">✓ FCMOVU</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="472" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="1130" style="fill:#214c32">✓ FCMOVNB</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="576" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="1130" style="fill:#214c32">✓ FCMOVNE</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="680" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="1130" style="fill:#214c32">✓ FCMOVNBE</text></g>
+<g><title>✓ 対応: EFLAGSによる8条件のx87レジスタ転送。</title><rect x="784" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="1130" style="fill:#214c32">✓ FCMOVNU</text></g>
+<g><title>✓ 対応: 符号操作と定数1・0のロード。</title><rect x="888" y="1116" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="1130" style="fill:#214c32">✓ FCHS</text></g>
+<g><title>✓ 対応: 符号操作と定数1・0のロード。</title><rect x="160" y="1140" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="1154" style="fill:#214c32">✓ FABS</text></g>
+<g><title>✓ 対応: 符号操作と定数1・0のロード。</title><rect x="264" y="1140" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="1154" style="fill:#214c32">✓ FLD1</text></g>
+<g><title>✓ 対応: 符号操作と定数1・0のロード。</title><rect x="368" y="1140" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="1154" style="fill:#214c32">✓ FLDZ</text></g>
+<g><title>△ 部分対応: 有限値の剰余。部分剰余とC0/C1/C2/C3に対応。非有限値・ゼロ除数は未対応。</title><rect x="472" y="1140" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="477" y="1154" style="fill:#584400">△ FPREM</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="576" y="1140" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="581" y="1154" style="fill:#424950">— FPREM1</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="680" y="1140" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="1154" style="fill:#424950">— FSQRT</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="784" y="1140" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="1154" style="fill:#424950">— FRNDINT</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="888" y="1140" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="1154" style="fill:#424950">— FSCALE</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="160" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="1178" style="fill:#424950">— FXTRACT</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="264" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="1178" style="fill:#424950">— F2XM1</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="368" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="373" y="1178" style="fill:#424950">— FYL2X</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="472" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="477" y="1178" style="fill:#424950">— FYL2XP1</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="576" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="581" y="1178" style="fill:#424950">— FPTAN</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="680" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="1178" style="fill:#424950">— FPATAN</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="784" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="1178" style="fill:#424950">— FSIN</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="888" y="1164" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="1178" style="fill:#424950">— FCOS</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="160" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="165" y="1202" style="fill:#424950">— FSINCOS</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="264" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="269" y="1202" style="fill:#424950">— FLDL2T</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="368" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="373" y="1202" style="fill:#424950">— FLDL2E</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="472" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="477" y="1202" style="fill:#424950">— FLDPI</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="576" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="581" y="1202" style="fill:#424950">— FLDLG2</text></g>
+<g><title>— 未対応: これらの演算・定数ロードは未実装。</title><rect x="680" y="1188" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="1202" style="fill:#424950">— FLDLN2</text></g>
+<path d="M12 1220H988" stroke="#ddd"/>
+<text class="category" x="12" y="1239">x87 状態管理</text>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="160" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="1238" style="fill:#214c32">✓ FNINIT</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="264" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="1238" style="fill:#214c32">✓ FNCLEX</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="368" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="373" y="1238" style="fill:#214c32">✓ FLDCW</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="472" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="477" y="1238" style="fill:#214c32">✓ FNSTCW</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="576" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="581" y="1238" style="fill:#214c32">✓ FNSTSW</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="680" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="685" y="1238" style="fill:#214c32">✓ FLDENV</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="784" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="789" y="1238" style="fill:#214c32">✓ FNSTENV</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="888" y="1224" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="893" y="1238" style="fill:#214c32">✓ FNSAVE</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="160" y="1248" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="165" y="1262" style="fill:#214c32">✓ FRSTOR</text></g>
+<g><title>✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。</title><rect x="264" y="1248" width="100" height="21" fill="#d9eddf"/><text class="instruction" x="269" y="1262" style="fill:#214c32">✓ FNOP</text></g>
+<g><title>△ 部分対応: CR0とFPU状態の検査。非マスク浮動小数点例外の処理全体は未対応。</title><rect x="368" y="1248" width="100" height="21" fill="#fff0b8"/><text class="instruction" x="373" y="1262" style="fill:#584400">△ FWAIT/WAIT</text></g>
+<g><title>— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。</title><rect x="472" y="1248" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="477" y="1262" style="fill:#424950">— FXAM</text></g>
+<g><title>— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。</title><rect x="576" y="1248" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="581" y="1262" style="fill:#424950">— FINCSTP</text></g>
+<g><title>— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。</title><rect x="680" y="1248" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="685" y="1262" style="fill:#424950">— FDECSTP</text></g>
+<g><title>— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。</title><rect x="784" y="1248" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="789" y="1262" style="fill:#424950">— FXSAVE</text></g>
+<g><title>— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。</title><rect x="888" y="1248" width="100" height="21" fill="#e7e9eb"/><text class="instruction" x="893" y="1262" style="fill:#424950">— FXRSTOR</text></g>
+</svg>

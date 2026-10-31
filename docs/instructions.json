@@ -1,0 +1,687 @@
+[
+  {
+    "category": "データ転送",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ MOV",
+          "✓ MOVSX",
+          "✓ MOVZX",
+          "✓ LEA",
+          "✓ XCHG",
+          "✓ XLAT"
+        ],
+        "note": "✓ 対応: 8/16/32-bitの該当形式。MOVはセグメントレジスタ転送も実装。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ CBW",
+          "✓ CWDE",
+          "✓ CWD",
+          "✓ CDQ"
+        ],
+        "note": "✓ 対応: 符号拡張。オペランドサイズに従う。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ BSWAP"
+        ],
+        "note": "△ 部分対応: 32-bitのみ。16-bit BSWAPは未対応。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— LDS",
+          "— LES",
+          "— LFS",
+          "— LGS",
+          "— LSS"
+        ],
+        "note": "— 未対応: far pointer loadのデコードは未実装。"
+      }
+    ]
+  },
+  {
+    "category": "算術・論理",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ ADD",
+          "✓ ADC",
+          "✓ SUB",
+          "✓ SBB",
+          "✓ CMP",
+          "✓ AND",
+          "✓ OR",
+          "✓ XOR",
+          "✓ TEST",
+          "✓ INC",
+          "✓ DEC",
+          "✓ NEG",
+          "✓ NOT"
+        ],
+        "note": "✓ 対応: 8/16/32-bitの整数演算とフラグ更新。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— DAA",
+          "— DAS",
+          "— AAA",
+          "— AAS",
+          "— AAM",
+          "— AAD"
+        ],
+        "note": "— 未対応: BCD・ASCII調整命令は未実装。"
+      }
+    ]
+  },
+  {
+    "category": "乗除算",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ MUL",
+          "✓ DIV",
+          "✓ IDIV"
+        ],
+        "note": "✓ 対応: 8/16/32-bit。除算例外を含む。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ IMUL"
+        ],
+        "note": "✓ 対応: 1 / 2 / 3オペランド形式。"
+      }
+    ]
+  },
+  {
+    "category": "シフト・回転",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ SHL/SAL",
+          "✓ SHR",
+          "✓ SAR",
+          "✓ ROL",
+          "✓ ROR",
+          "✓ RCL",
+          "✓ RCR",
+          "✓ SHLD",
+          "✓ SHRD"
+        ],
+        "note": "✓ 対応: 即値・CLによるシフト／回転。SHLD/SHRDは16/32-bit。"
+      }
+    ]
+  },
+  {
+    "category": "ビット操作",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ BT",
+          "✓ BTS",
+          "✓ BTR",
+          "✓ BTC",
+          "✓ BSF",
+          "✓ BSR"
+        ],
+        "note": "✓ 対応: 16/32-bitのレジスタ・メモリ形式。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— POPCNT",
+          "— LZCNT",
+          "— TZCNT"
+        ],
+        "note": "— 未対応: 拡張ビット操作は未実装。"
+      }
+    ]
+  },
+  {
+    "category": "条件分岐",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ JO",
+          "✓ JNO",
+          "✓ JB",
+          "✓ JAE",
+          "✓ JE",
+          "✓ JNE",
+          "✓ JBE",
+          "✓ JA",
+          "✓ JS",
+          "✓ JNS",
+          "✓ JP",
+          "✓ JNP",
+          "✓ JL",
+          "✓ JGE",
+          "✓ JLE",
+          "✓ JG"
+        ],
+        "note": "✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。"
+      }
+    ]
+  },
+  {
+    "category": "条件セット",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ SETO",
+          "✓ SETNO",
+          "✓ SETB",
+          "✓ SETAE",
+          "✓ SETE",
+          "✓ SETNE",
+          "✓ SETBE",
+          "✓ SETA",
+          "✓ SETS",
+          "✓ SETNS",
+          "✓ SETP",
+          "✓ SETNP",
+          "✓ SETL",
+          "✓ SETGE",
+          "✓ SETLE",
+          "✓ SETG"
+        ],
+        "note": "✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。"
+      }
+    ]
+  },
+  {
+    "category": "条件転送",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ CMOVO",
+          "✓ CMOVNO",
+          "✓ CMOVB",
+          "✓ CMOVAE",
+          "✓ CMOVE",
+          "✓ CMOVNE",
+          "✓ CMOVBE",
+          "✓ CMOVA",
+          "✓ CMOVS",
+          "✓ CMOVNS",
+          "✓ CMOVP",
+          "✓ CMOVNP",
+          "✓ CMOVL",
+          "✓ CMOVGE",
+          "✓ CMOVLE",
+          "✓ CMOVG"
+        ],
+        "note": "✓ 対応: 全16条件。条件の別名（Z=E、C=Bなど）は同じ命令として扱う。"
+      }
+    ]
+  },
+  {
+    "category": "スタック",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ PUSH",
+          "✓ POP",
+          "✓ PUSHF/PUSHFD",
+          "✓ POPF/POPFD",
+          "✓ PUSHA/PUSHAD",
+          "✓ POPA/POPAD",
+          "✓ ENTER",
+          "✓ LEAVE"
+        ],
+        "note": "✓ 対応: 16/32-bitオペランド。スタックアドレスは32-bitのみ。POPFは特権に応じてフラグを更新。"
+      }
+    ]
+  },
+  {
+    "category": "制御移行",
+    "groups": [
+      {
+        "status": "partial",
+        "instructions": [
+          "△ CALL"
+        ],
+        "note": "△ 部分対応: nearの直接・間接形式に対応。far CALL・コールゲートは未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ JMP"
+        ],
+        "note": "△ 部分対応: nearの直接・間接、即値の直接far JMPに対応。間接far JMP・タスク切替は未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ RET"
+        ],
+        "note": "△ 部分対応: near RETのみ。即値によるスタック調整に対応。far RETは未対応。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ LOOP",
+          "✓ LOOPE/LOOPZ",
+          "✓ LOOPNE/LOOPNZ",
+          "✓ JCXZ",
+          "✓ JECXZ"
+        ],
+        "note": "✓ 対応: アドレスサイズに従いCXまたはECXを使用。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ INT",
+          "✓ INT3",
+          "✓ INTO"
+        ],
+        "note": "✓ 対応: IDTによるソフトウェア割り込み。INTOはOFを検査。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ IRET/IRETD"
+        ],
+        "note": "△ 部分対応: 32-bit IRETと特権復帰。16-bit・タスク復帰・VM86復帰は未対応。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ NOP"
+        ],
+        "note": "✓ 対応: 単一バイト・複数バイトNOP。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— BOUND",
+          "— UD2",
+          "— SYSENTER",
+          "— SYSEXIT"
+        ],
+        "note": "— 未対応: これらの命令は未実装。SYSENTER用MSRの保存とは別。"
+      }
+    ]
+  },
+  {
+    "category": "文字列・プレフィックス",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ MOVS",
+          "✓ STOS",
+          "✓ LODS",
+          "✓ CMPS",
+          "✓ SCAS"
+        ],
+        "note": "✓ 対応: byte / word / dword。16/32-bitアドレス指定。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ REP",
+          "✓ REPE/REPZ",
+          "✓ REPNE/REPNZ"
+        ],
+        "note": "✓ 対応: 対応文字列命令の反復。比較命令ではZFによる停止を処理。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— INS",
+          "— OUTS"
+        ],
+        "note": "— 未対応: 文字列ポートI/Oは未実装。"
+      }
+    ]
+  },
+  {
+    "category": "フラグ",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ CLC",
+          "✓ STC",
+          "✓ CMC",
+          "✓ CLD",
+          "✓ STD",
+          "✓ LAHF",
+          "✓ SAHF",
+          "✓ CLI",
+          "✓ STI"
+        ],
+        "note": "✓ 対応: CLI/STIの特権検査、STI後の割り込み抑制を含む。"
+      }
+    ]
+  },
+  {
+    "category": "アトミック",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ CMPXCHG",
+          "✓ CMPXCHG8B",
+          "✓ XADD"
+        ],
+        "note": "✓ 対応: 単一CPUのインタプリタ上で実装。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ LOCK"
+        ],
+        "note": "✓ 対応: 対応するメモリ更新命令に対して検査。複数CPUは対象外。"
+      }
+    ]
+  },
+  {
+    "category": "I/O・停止",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ IN",
+          "✓ OUT"
+        ],
+        "note": "✓ 対応: 8/16/32-bit、即値またはDXポート。I/O権限検査。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ HLT"
+        ],
+        "note": "✓ 対応: 特権検査と外部IRQによる復帰。"
+      }
+    ]
+  },
+  {
+    "category": "システム",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ SGDT",
+          "✓ SIDT",
+          "✓ LGDT",
+          "✓ LIDT",
+          "✓ SLDT",
+          "✓ LLDT",
+          "✓ STR",
+          "✓ LTR",
+          "✓ VERR",
+          "✓ VERW",
+          "✓ LAR",
+          "✓ LSL",
+          "✓ SMSW",
+          "✓ LMSW",
+          "✓ CLTS"
+        ],
+        "note": "✓ 対応: 保護モードの記述子・特権・制御状態を処理。LTRはTSSのロードで、タスク切替は未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ MOV_CR"
+        ],
+        "note": "△ 部分対応: CR0/2/3/4の転送。実装対象の保護モード・legacy/PAEページングに限定。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ MOV_DR"
+        ],
+        "note": "△ 部分対応: debugレジスタの読み書きに対応。DR7でハードウェアブレークポイントを有効化する操作は未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ INVLPG"
+        ],
+        "note": "△ 部分対応: TLB全体の無効化として実装。ページ単位の無効化ではない。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ CPUID"
+        ],
+        "note": "△ 部分対応: 固定のCPU情報。基本leaf 0/1などの限定情報を返す。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ RDTSC"
+        ],
+        "note": "△ 部分対応: 仮想サイクル数を返す。ホストの実クロックではない。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ RDMSR",
+          "△ WRMSR"
+        ],
+        "note": "△ 部分対応: TSC・限定MSRのみ。SYSENTER用MSRは保存するが、SYSENTER/SYSEXIT命令は未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ INVD",
+          "△ WBINVD"
+        ],
+        "note": "△ 部分対応: 特権検査のみ。キャッシュ動作はモデル化していない。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— RDPMC",
+          "— RSM"
+        ],
+        "note": "— 未対応: パフォーマンスカウンタ・SMMは未実装。"
+      }
+    ]
+  },
+  {
+    "category": "x87 転送・スタック",
+    "groups": [
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FLD",
+          "△ FST",
+          "△ FSTP"
+        ],
+        "note": "△ 部分対応: レジスタ・メモリ転送。NaN・±∞・subnormalのロード／ストアを含む。変換レンジ外や一部の非有限値表現・非マスク例外は未対応。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ FILD"
+        ],
+        "note": "✓ 対応: 16/32/64-bit符号付き整数のロード。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FIST",
+          "△ FISTP"
+        ],
+        "note": "△ 部分対応: FISTは16/32-bit、FISTPは16/32/64-bit。丸めに対応、変換オーバーフローは未対応。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ FXCH",
+          "✓ FFREE"
+        ],
+        "note": "✓ 対応: x87スタックレジスタの交換・解放。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— FBLD",
+          "— FBSTP",
+          "— FISTTP"
+        ],
+        "note": "— 未対応: BCD転送・切り捨て整数ストアは未実装。"
+      }
+    ]
+  },
+  {
+    "category": "x87 演算・比較",
+    "groups": [
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FADD",
+          "△ FADDP",
+          "△ FIADD",
+          "△ FMUL",
+          "△ FMULP",
+          "△ FIMUL",
+          "△ FSUB",
+          "△ FSUBP",
+          "△ FSUBR",
+          "△ FSUBRP",
+          "△ FISUB",
+          "△ FISUBR",
+          "△ FDIV",
+          "△ FDIVP",
+          "△ FDIVR",
+          "△ FDIVRP",
+          "△ FIDIV",
+          "△ FIDIVR"
+        ],
+        "note": "△ 部分対応: 有限値の有理数演算。PC=24/53/64と丸め方向を適用。NaN・∞演算、ゼロ除算、算術オーバーフロー等は未対応。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FCOM",
+          "△ FCOMP",
+          "△ FCOMPP",
+          "△ FICOM",
+          "△ FICOMP",
+          "△ FUCOM",
+          "△ FUCOMP",
+          "△ FUCOMPP",
+          "△ FCOMI",
+          "△ FCOMIP",
+          "△ FUCOMI",
+          "△ FUCOMIP",
+          "△ FTST"
+        ],
+        "note": "△ 部分対応: 有限値の比較。非有限値のunordered比較や例外動作は未対応。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ FCMOVB",
+          "✓ FCMOVE",
+          "✓ FCMOVBE",
+          "✓ FCMOVU",
+          "✓ FCMOVNB",
+          "✓ FCMOVNE",
+          "✓ FCMOVNBE",
+          "✓ FCMOVNU"
+        ],
+        "note": "✓ 対応: EFLAGSによる8条件のx87レジスタ転送。"
+      },
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ FCHS",
+          "✓ FABS",
+          "✓ FLD1",
+          "✓ FLDZ"
+        ],
+        "note": "✓ 対応: 符号操作と定数1・0のロード。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FPREM"
+        ],
+        "note": "△ 部分対応: 有限値の剰余。部分剰余とC0/C1/C2/C3に対応。非有限値・ゼロ除数は未対応。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— FPREM1",
+          "— FSQRT",
+          "— FRNDINT",
+          "— FSCALE",
+          "— FXTRACT",
+          "— F2XM1",
+          "— FYL2X",
+          "— FYL2XP1",
+          "— FPTAN",
+          "— FPATAN",
+          "— FSIN",
+          "— FCOS",
+          "— FSINCOS",
+          "— FLDL2T",
+          "— FLDL2E",
+          "— FLDPI",
+          "— FLDLG2",
+          "— FLDLN2"
+        ],
+        "note": "— 未対応: これらの演算・定数ロードは未実装。"
+      }
+    ]
+  },
+  {
+    "category": "x87 状態管理",
+    "groups": [
+      {
+        "status": "yes",
+        "instructions": [
+          "✓ FNINIT",
+          "✓ FNCLEX",
+          "✓ FLDCW",
+          "✓ FNSTCW",
+          "✓ FNSTSW",
+          "✓ FLDENV",
+          "✓ FNSTENV",
+          "✓ FNSAVE",
+          "✓ FRSTOR",
+          "✓ FNOP"
+        ],
+        "note": "✓ 対応: 制御・状態・環境・レジスタ保存復元。待機形式はFWAITプレフィックスとの組合せ。"
+      },
+      {
+        "status": "partial",
+        "instructions": [
+          "△ FWAIT/WAIT"
+        ],
+        "note": "△ 部分対応: CR0とFPU状態の検査。非マスク浮動小数点例外の処理全体は未対応。"
+      },
+      {
+        "status": "no",
+        "instructions": [
+          "— FXAM",
+          "— FINCSTP",
+          "— FDECSTP",
+          "— FXSAVE",
+          "— FXRSTOR"
+        ],
+        "note": "— 未対応: 分類・スタックポインタ操作・拡張状態保存復元は未実装。"
+      }
+    ]
+  }
+]

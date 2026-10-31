@@ -15,22 +15,23 @@
   test_devices
   test_elf
   test_fpu
+  test_fprem
   test_cmpxchg8b)
  (modules
   (:standard \ instruction_probe kernel_probe fpu_probe))
- (libraries ocaml_os))
+ (libraries ocaml_x86))
 
 (executable
  (name instruction_probe)
  (modules instruction_probe)
- (libraries ocaml_os))
+ (libraries ocaml_x86))
 
 (executable
  (name kernel_probe)
  (modules kernel_probe)
- (libraries ocaml_os))
+ (libraries ocaml_x86))
 
 (executable
  (name fpu_probe)
  (modules fpu_probe)
- (libraries ocaml_os))
+ (libraries ocaml_x86))
