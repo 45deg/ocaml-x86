@@ -1,0 +1,5 @@
+(executable
+ (name main)
+ (public_name ocaml-os)
+ (package ocaml_os)
+ (libraries ocaml_os unix))

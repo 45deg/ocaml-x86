@@ -1,0 +1,90 @@
+[    0.000000] Linux version 6.12.114-0-lts (buildozer@build-3-22-x86) (cc (Alpine 14.2.0) 14.2.0, GNU ld (GNU Binutils) 2.44) #1-Alpine SMP PREEMPT_DYNAMIC 2026-10-21 13:44:51
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+[    0.000000] BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000007ffffff] usable
+[    0.000000] Notice: NX (Execute Disable) protection missing in CPU!
+[    0.000000] APIC: Static calls initialized
+[    0.000000] DMI not present or invalid.
+[    0.000000] tsc: Fast TSC calibration using PIT
+[    0.000000] tsc: Detected 100.235 MHz processor
+[    0.000349] last_pfn = 0x8000 max_arch_pfn = 0x100000
+[    0.000394] MTRRs disabled (not available)
+[    0.000424] x86/PAT: PAT not supported by the CPU.
+[    0.000460] x86/PAT: Configuration [0-7]: WB  WT  UC- UC  WB  WT  UC- UC  
+[    0.072387] ACPI: Early table checksum verification disabled
+[    0.076534] ACPI BIOS Error (bug): A valid RSDP was not found (20240827/tbxfroot-222)
+[    0.076631] 0MB HIGHMEM available.
+[    0.076661] 128MB LOWMEM available.
+[    0.076693]   mapped low ram: 0 - 08000000
+[    0.076727]   low ram: 0 - 08000000
+[    0.076780] Zone ranges:
+[    0.076800]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+[    0.076868]   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
+[    0.076938]   HighMem  empty
+[    0.076979] Movable zone start for each node
+[    0.077003] Early memory node ranges
+[    0.077027]   node   0: [mem 0x0000000000001000-0x000000000009ffff]
+[    0.077084]   node   0: [mem 0x0000000000100000-0x0000000007ffffff]
+[    0.077145] Initmem setup node 0 [mem 0x0000000000001000-0x0000000007ffffff]
+[    0.077422] On node 0, zone DMA: 1 pages in unavailable ranges
+[    0.080802] On node 0, zone DMA: 96 pages in unavailable ranges
+[    0.105217] Local APIC disabled by BIOS -- you can enable it with "lapic"
+[    0.105246] APIC: disable apic facility
+[    0.105311] APIC: Switched APIC routing to: noop
+[    0.105349] CPU topo: Max. logical packages:   1
+[    0.105382] CPU topo: Max. logical dies:       1
+[    0.105415] CPU topo: Max. dies per package:   1
+[    0.105452] CPU topo: Max. threads per core:   1
+[    0.105486] CPU topo: Num. cores per package:     1
+[    0.105521] CPU topo: Num. threads per package:   1
+[    0.105554] CPU topo: Allowing 1 present CPUs plus 0 hotplug CPUs
+[    0.105714] PM: hibernation: Registered nosave memory: [mem 0x00000000-0x00000fff]
+[    0.105785] PM: hibernation: Registered nosave memory: [mem 0x000a0000-0x000fffff]
+[    0.105851] [mem 0x08000000-0xffffffff] available for PCI devices
+[    0.105903] Booting paravirtualized kernel on bare hardware
+[    0.105938] clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1910969940391419 ns
+[    0.106095] setup_percpu: NR_CPUS:64 nr_cpumask_bits:1 nr_cpu_ids:1 nr_node_ids:1
+[    0.108886] percpu: Embedded 35 pages/cpu s110732 r0 d32628 u143360
+[    0.109542] Kernel command line: console=ttyS0 earlyprintk=serial,ttyS0 nokaslr rdinit=/bin/sh
+[    0.110875] Unknown kernel command line parameters "earlyprintk=serial,ttyS0", will be passed to user space.
+[    0.111895] Dentry cache hash table entries: 16384 (order: 4, 65536 bytes, linear)
+[    0.112338] Inode-cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.112595] Built 1 zonelists, mobility grouping on.  Total pages: 32671
+[    0.135304] mem auto-init: stack:all(zero), heap alloc:on, heap free:off
+[    0.135356] Initializing HighMem for node 0 (00000000:00000000)
+[    0.145848] Checking if this processor honours the WP bit even in supervisor mode...Ok.
+[    0.850807] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.850883] kmemleak: Kernel memory leak detector disabled
+[    0.957562] ftrace: allocating 37790 entries in 74 pages
+[    0.957605] ftrace: allocated 74 pages with 3 groups
+[    0.965192] Dynamic Preempt: voluntary
+[    0.970633] rcu: Preemptible hierarchical RCU implementation.
+[    0.970660] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=1.
+[    0.970706] 	Trampoline variant of Tasks RCU enabled.
+[    0.970731] 	Rude variant of Tasks RCU enabled.
+[    0.970755] 	Tracing variant of Tasks RCU enabled.
+[    0.970781] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.970820] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.971132] RCU Tasks: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.971207] RCU Tasks Rude: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.971282] RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    1.386804] NR_IRQS: 4352, nr_irqs: 32, preallocated irqs: 16
+[    1.388953] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    1.389005] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    1.429742] kfence: initialized - using 2097152 bytes for 255 objects at 0x(ptrval)-0x(ptrval)
+[    1.433101] Console: colour dummy device 80x25
+[    1.433202] printk: legacy console [ttyS0] enabled
+[    1.441190] APIC: Keep in PIC mode(8259)
+[    1.441307] clocksource: tsc-early: mask: 0xffffffffffffffff max_cycles: 0x171e04d566, max_idle_ns: 440795203189 ns
+[    1.441583] Calibrating delay loop (skipped), value calculated using timer frequency.. 200.47 BogoMIPS (lpj=100235)
+[    1.441911] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+[    1.442065] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+[    1.442719] Spectre V1 : Mitigation: usercopy/swapgs barriers and __user pointer sanitization
+[    1.442921] Spectre V2 : Mitigation: Retpolines
+[    1.443046] Spectre V2 : Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT
+[    1.443219] Speculative Store Bypass: Vulnerable
+[    1.443346] L1TF: Kernel not compiled for PAE. No mitigation for L1TF
+[    1.443495] MDS: Vulnerable: Clear CPU buffers attempted, no microcode
+[    1.443697] MMIO Stale Data: Unknown: No mitigations
+[    1.443838] x86/fpu: Giving up, no FPU found and no math emulation present

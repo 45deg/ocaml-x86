@@ -1,0 +1,4 @@
+c77cd9c37609b8b1b1cdfbb91b644a44d606d3d75da8656a0c79635be0b89c21  fixtures/debian/linux
+e35e11980cc62ea152cb6913bd5dee43a2174e576bd9f6feaa8814dbbdec2264  fixtures/debian/vmlinux
+8268d978265dc07d9054d3d23c581ec1e6c2d82b134331d09069a923d04dc48a  fixtures/debian/bookworm-i386-slim-rootfs.tar.gz
+b7fe558693d1c1b86957bbaf9d5fabc6825a63b5e99cfb46ada30cada1323efa  fixtures/debian/slim-initramfs.cpio

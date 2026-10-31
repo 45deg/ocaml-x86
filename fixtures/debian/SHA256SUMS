@@ -1,0 +1,3 @@
+c77cd9c37609b8b1b1cdfbb91b644a44d606d3d75da8656a0c79635be0b89c21  fixtures/debian/linux
+e35e11980cc62ea152cb6913bd5dee43a2174e576bd9f6feaa8814dbbdec2264  fixtures/debian/vmlinux
+c24f8bfb72a45b9231e3e5a4257f108f2ea7f48ce2cf68f614654d0da4463201  fixtures/debian/initrd.gz

@@ -1,0 +1,65 @@
+[    0.000000] Linux version 6.1.0-50-686 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.176-1 (2026-07-02)
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+[    0.000000] BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000007ffffff] usable
+[    0.000000] printk: bootconsole [earlyser0] enabled
+[    0.000000] Notice: NX (Execute Disable) protection missing in CPU!
+[    0.000000] DMI not present or invalid.
+[    0.000000] tsc: Fast TSC calibration using PIT
+[    0.000000] tsc: Detected 100.228 MHz processor
+[    0.000391] last_pfn = 0x8000 max_arch_pfn = 0x100000
+[    0.000488] Disabled
+[    0.000542] x86/PAT: MTRRs disabled, skipping PAT initialization too.
+[    0.000640] x86/PAT: Configuration [0-7]: WB  WT  UC- UC  WB  WT  UC- UC  
+[    0.055091] RAMDISK: [mem 0x06317000-0x07ffffff]
+[    0.055193] ACPI: Early table checksum verification disabled
+[    0.058733] ACPI BIOS Error (bug): A valid RSDP was not found (20220331/tbxfroot-210)
+[    0.058911] 0MB HIGHMEM available.
+[    0.058983] 128MB LOWMEM available.
+[    0.059056]   mapped low ram: 0 - 08000000
+[    0.059137]   low ram: 0 - 08000000
+[    0.059243] Zone ranges:
+[    0.059301]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+[    0.059434]   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
+[    0.059570]   HighMem  empty
+[    0.059658] Movable zone start for each node
+[    0.059728] Early memory node ranges
+[    0.059795]   node   0: [mem 0x0000000000001000-0x000000000009ffff]
+[    0.059909]   node   0: [mem 0x0000000000100000-0x0000000007ffffff]
+[    0.060028] Initmem setup node 0 [mem 0x0000000000001000-0x0000000007ffffff]
+[    0.060280] On node 0, zone DMA: 1 pages in unavailable ranges
+[    0.062299] On node 0, zone DMA: 96 pages in unavailable ranges
+[    0.076733] Using APIC driver default
+[    0.076875] Local APIC disabled by BIOS -- you can enable it with "lapic"
+[    0.076965] APIC: disable apic facility
+[    0.077033] APIC: switched to apic NOOP
+[    0.077101] smpboot: Allowing 1 CPUs, 0 hotplug CPUs
+[    0.077265] PM: hibernation: Registered nosave memory: [mem 0x00000000-0x00000fff]
+[    0.077392] PM: hibernation: Registered nosave memory: [mem 0x000a0000-0x000fffff]
+[    0.077522] [mem 0x08000000-0xffffffff] available for PCI devices
+[    0.077630] Booting paravirtualized kernel on bare hardware
+[    0.077722] clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645519600211568 ns
+[    0.077926] setup_percpu: NR_CPUS:32 nr_cpumask_bits:1 nr_cpu_ids:1 nr_node_ids:1
+[    0.080579] percpu: Embedded 33 pages/cpu s103316 r0 d31852 u135168
+[    0.081231] Built 1 zonelists, mobility grouping on.  Total pages: 32351
+[    0.081343] Kernel command line: console=ttyS0 earlyprintk=serial,ttyS0 nokaslr rdinit=/bin/sh
+[    0.083539] Dentry cache hash table entries: 16384 (order: 4, 65536 bytes, linear)
+[    0.084032] Inode-cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.084315] mem auto-init: stack:all(zero), heap alloc:on, heap free:off
+[    0.084421] Initializing HighMem for node 0 (00000000:00000000)
+[    0.092216] Checking if this processor honours the WP bit even in supervisor mode...Ok.
+[    0.092346] Memory: 83616K/130684K available (9327K kernel code, 1246K rwdata, 3188K rodata, 912K init, 464K bss, 47068K reserved, 0K cma-reserved, 0K highmem)
+[    0.114892] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Poking KASLR using RDTSC...
+[    0.116341] ftrace: allocating 36953 entries in 73 pages
+[    0.198476] ftrace: allocated 73 pages with 3 groups
+[    0.202651] trace event string verifier disabled
+[    0.203866] Dynamic Preempt: voluntary
+[    0.205319] rcu: Preemptible hierarchical RCU implementation.
+[    0.205401] rcu: 	RCU restricting CPUs from NR_CPUS=32 to nr_cpu_ids=1.
+[    0.205505] 	Trampoline variant of Tasks RCU enabled.
+[    0.205582] 	Rude variant of Tasks RCU enabled.
+[    0.205654] 	Tracing variant of Tasks RCU enabled.
+[    0.205729] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.205832] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1

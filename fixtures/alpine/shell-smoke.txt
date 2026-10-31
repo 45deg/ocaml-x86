@@ -1,0 +1,5 @@
+echo OCAML_SHELL_OK
+printf 'arithmetic=%s\n' "$((21 * 2))"
+/bin/busybox uname -m
+cat /etc/alpine-release
+printf 'OCAML_SHELL_DONE\n'

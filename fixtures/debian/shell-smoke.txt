@@ -1,0 +1,5 @@
+echo DEBIAN_SHELL_OK
+printf 'arithmetic=%s\n' "$((21 * 2))"
+/bin/busybox uname -r
+/bin/busybox uname -m
+printf 'DEBIAN_SHELL_DONE\n'
