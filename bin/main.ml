@@ -72,8 +72,10 @@ let () =
       Option.value !memory_mib
         ~default:(if Option.is_some !kernel then 128 else 16)
     in
-    if ram_mib < 1 || ram_mib > 4095 then
-      failwith "--memory-mib must be between 1 and 4095";
+    let max_ram_mib = min 4095 (max_int / (1024 * 1024)) in
+    if ram_mib < 1 || ram_mib > max_ram_mib then
+      failwith
+        (Printf.sprintf "--memory-mib must be between 1 and %d" max_ram_mib);
     let memory = Memory.create ~size:(ram_mib * 1024 * 1024) in
     let output_u8 ~port value =
       if port = 0x3f8 then (

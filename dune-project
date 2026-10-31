@@ -5,6 +5,6 @@
  (name ocaml_os)
  (synopsis "An experimental 32-bit x86 interpreter")
  (depends
-  (ocaml (>= 5.2))
-  (base (>= v0.17))
+  (ocaml (>= 4.14))
+  (base (>= v0.16))
   zarith))

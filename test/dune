@@ -1,6 +1,7 @@
 (tests
  (names
   test_cpu
+  test_memory
   test_addressing
   test_width
   test_strings

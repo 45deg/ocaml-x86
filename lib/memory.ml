@@ -4,11 +4,12 @@
 
 open Base
 module Wide = Stdlib.Int64
-module B = Stdlib.Bytes
+module W = Stdlib.Int32
+module B = Stdlib.Bigarray.Array1
 
 (* Physical RAM and page-table write tracking state. *)
 type t = {
-  data : bytes;
+  data : (int, Stdlib.Bigarray.int8_unsigned_elt, Stdlib.Bigarray.c_layout) B.t;
   page_tables : bool array;
   mutable translation_epoch : int;
 }
@@ -16,14 +17,18 @@ type t = {
 exception Access_fault of { address : int32; width : int }
 
 (* Return the RAM size in bytes. *)
-let size t = B.length t.data
+let size t = B.dim t.data
 
 (* Allocate zero-initialized RAM of the requested size. *)
 let create ~size =
   if size <= 0 then invalid_arg "Memory.create: size must be positive";
+  let data =
+    B.create Stdlib.Bigarray.int8_unsigned Stdlib.Bigarray.c_layout size
+  in
+  B.fill data 0;
   {
-    data = B.make size '\000';
-    page_tables = Array.create ~len:((size + 4095) / 4096) false;
+    data;
+    page_tables = Array.create ~len:(((size - 1) / 4096) + 1) false;
     translation_epoch = 0;
   }
 
@@ -34,9 +39,10 @@ let index t ~address ~width =
     raise (Access_fault { address; width });
   Wide.to_int unsigned
 
+(* Register a physical page whose writes invalidate translations. *)
+
 (** Page walks register their physical table pages. Writes to any registered
     page advance the epoch, including writes through aliases and [load]. *)
-(* Register a physical page whose writes invalidate translations. *)
 let watch_page_table t ~address =
   let start = index t ~address ~width:1 in
   t.page_tables.(start lsr 12) <- true
@@ -56,38 +62,52 @@ let changed t start width =
       t.translation_epoch <- t.translation_epoch + 1
 
 (* Read an unsigned byte from physical RAM. *)
-let read_u8 t ~address = B.get_uint8 t.data (index t ~address ~width:1)
+let read_u8 t ~address = B.get t.data (index t ~address ~width:1)
+
 (* Read a little-endian unsigned 16-bit value from physical RAM. *)
-let read_u16 t ~address = B.get_uint16_le t.data (index t ~address ~width:2)
+let read_u16 t ~address =
+  let start = index t ~address ~width:2 in
+  B.get t.data start lor (B.get t.data (start + 1) lsl 8)
+
 (* Read a little-endian 32-bit value from physical RAM. *)
-let read_u32 t ~address = B.get_int32_le t.data (index t ~address ~width:4)
+let read_u32 t ~address =
+  let start = index t ~address ~width:4 in
+  let byte offset = W.of_int (B.get t.data (start + offset)) in
+  W.logor
+    (W.logor (byte 0) (W.shift_left (byte 1) 8))
+    (W.logor (W.shift_left (byte 2) 16) (W.shift_left (byte 3) 24))
 
 (* Write a byte to physical RAM and track page-table changes. *)
 let write_u8 t ~address value =
   if value < 0 || value > 255 then invalid_arg "Memory.write_u8: not a byte";
   let start = index t ~address ~width:1 in
   changed t start 1;
-  B.set_uint8 t.data start value
+  B.set t.data start value
 
 (* Write a little-endian 16-bit value and track page-table changes. *)
 let write_u16 t ~address value =
   if value < 0 || value > 65535 then invalid_arg "Memory.write_u16: not a word";
   let start = index t ~address ~width:2 in
   changed t start 2;
-  B.set_uint16_le t.data start value
+  B.set t.data start (value land 255);
+  B.set t.data (start + 1) ((value lsr 8) land 255)
 
 (* Write a little-endian 32-bit value and track page-table changes. *)
 let write_u32 t ~address value =
   let start = index t ~address ~width:4 in
   changed t start 4;
-  B.set_int32_le t.data start value
+  for offset = 0 to 3 do
+    B.set t.data (start + offset)
+      (W.to_int (W.logand (W.shift_right_logical value (offset * 8)) 255l))
+  done
 
 (* Copy bytes into physical RAM and track page-table changes. *)
 let load t ~address bytes =
   let width = String.length bytes in
   let start = index t ~address ~width in
   changed t start width;
-  B.blit_string bytes 0 t.data start width
+  String.iteri bytes ~f:(fun offset byte ->
+      B.set t.data (start + offset) (Char.to_int byte))
 
 (* Validate a physical RAM address range without accessing it. *)
 let check_access t ~address ~width = ignore (index t ~address ~width : int)

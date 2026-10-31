@@ -4,7 +4,9 @@ OCamlで実装した32-bit x86インタプリタ。ハードウェア仮想化�
 
 ## ビルドと実行
 
-必要環境：64-bit Unix系ホスト、opam、OCaml 5.2以上、Dune 3.17以上、Base v0.17以上、Zarith、Python 3.9以上（補助スクリプト用）。
+必要環境：64-bit Unix系ホスト、opam、OCaml 4.14以上、Dune 3.17以上、Base v0.16以上、Zarith、Python 3.9以上（補助スクリプト用）。
+
+OCaml 4.14ではBase v0.16系を使用する。仮想RAMはBigarrayに保持し、単一の`bytes`のサイズ制限を回避している。32-bitホストでの動作は未検証で、RAMの指定上限は1023 MiBになる。また、入力ファイルは`string`へ一括で読み込むため、32-bit環境ではカーネル・initramfsなど各ファイルのサイズが約16 MiB未満である必要がある。
 
 ```sh
 opam install . --deps-only
