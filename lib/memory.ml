@@ -1,5 +1,6 @@
-(* Zero-initialized physical RAM. Addresses are unsigned 32-bit values.
-   Invalid accesses raise [Access_fault] before modifying memory. *)
+(** Zero-initialized physical RAM. Addresses are unsigned 32-bit values.
+    Every access checks its complete range. Invalid accesses raise [Access_fault]
+    before modifying memory. *)
 
 open Base
 module Wide = Stdlib.Int64
@@ -34,6 +35,8 @@ let index t ~address ~width =
   Wide.to_int unsigned
 ;;
 
+(** Page walks register their physical table pages. Writes to any registered
+    page advance the epoch, including writes through aliases and [load]. *)
 let watch_page_table t ~address =
   let start = index t ~address ~width:1 in
   t.page_tables.(start lsr 12) <- true
