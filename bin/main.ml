@@ -1,7 +1,5 @@
 open Ocaml_os
 
-let demo = "\xba\xf8\x03\x00\x00\xb0O\xee\xb0K\xee\xb0\x0a\xee\xf4"
-
 let () =
   let input = ref None in
   let budget = ref 1_000_000 in
@@ -48,7 +46,12 @@ let () =
        match !input with
        | None -> input := Some path
        | Some _ -> raise (Arg.Bad "Only one raw binary is accepted"))
-    "ocaml-os [--steps N] [raw-32-bit.bin]";
+    "ocaml-os [options] (raw-32-bit.bin | --kernel bzImage)";
+  if Option.is_none !input && Option.is_none !kernel
+  then (
+    prerr_endline "Usage: ocaml-os [options] (raw-32-bit.bin | --kernel bzImage)";
+    prerr_endline "Use --help to list options.";
+    exit 2);
   if !progress_every < 0
   then (
     prerr_endline "--progress-every must be nonnegative";
@@ -58,11 +61,6 @@ let () =
     prerr_endline "--steps must be nonnegative";
     exit 2);
   try
-    let program =
-      match !input with
-      | None -> demo
-      | Some path -> In_channel.with_open_bin path In_channel.input_all
-    in
     if Option.is_some !kernel && Option.is_some !input
     then failwith "Choose --kernel or a raw binary";
     if Option.is_some !kernel_elf && Option.is_none !kernel
@@ -109,12 +107,14 @@ let () =
           Option.iter (fun device -> Devices.input device text) !devices)
     in
     let cpu = Cpu.create ~memory ~output_u8 in
-    (match !kernel with
-     | None ->
+    (match !kernel, !input with
+     | None, Some path ->
+       let program = In_channel.with_open_bin path In_channel.input_all in
        Memory.load memory ~address:0x1000l program;
        Cpu.set_eip cpu 0x1000l;
        Cpu.set_register cpu Esp (Int32.of_int (Memory.size memory))
-     | Some path ->
+     | None, None -> failwith "Specify --kernel or a raw binary"
+     | Some path, _ ->
        let read path = In_channel.with_open_bin path In_channel.input_all in
        let image =
          Linux_boot.load

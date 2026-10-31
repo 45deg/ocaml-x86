@@ -7,5 +7,4 @@
  (depends
   (ocaml (>= 5.2))
   (base (>= v0.17))
-  zarith
-  (ocamlformat (and :with-test (= 0.29.0)))))
+  zarith))

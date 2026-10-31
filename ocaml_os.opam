@@ -6,7 +6,6 @@ depends: [
   "ocaml" {>= "5.2"}
   "base" {>= "v0.17"}
   "zarith"
-  "ocamlformat" {with-test & = "0.29.0"}
   "odoc" {with-doc}
 ]
 build: [

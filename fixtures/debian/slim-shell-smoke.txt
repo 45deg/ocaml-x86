@@ -1,7 +1,0 @@
-echo DEBIAN_SLIM_OK
-printf 'arithmetic=%s\n' "$((21 * 2))"
-uname -r
-uname -m
-cat /etc/debian_version
-cat /proc/mounts
-echo DEBIAN_SLIM_DONE
