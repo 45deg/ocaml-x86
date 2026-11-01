@@ -29,7 +29,7 @@ dune exec ocaml-x86 -- --steps 1000000 path/to/program.bin
 
 ## Linuxの起動
 
-カーネルとrootfsを取得し、`make_initramfs.py`でinitramfsを作成して起動する（要`curl`、`shasum`または`sha256sum`）。
+カーネルとrootfsを取得し、`make_initramfs.py`でinitramfsを作成して起動する（要`curl`）。
 
 ### Alpine Linux (3.22.7 x86)
 
@@ -39,12 +39,6 @@ curl -fL https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/x86/netboot-3.22.7
   -o fixtures/alpine/vmlinuz-lts
 curl -fL https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/x86/alpine-minirootfs-3.22.7-x86.tar.gz \
   -o fixtures/alpine/alpine-minirootfs-3.22.7-x86.tar.gz
-cd fixtures/alpine
-printf '%s  %s\n' \
-  90b1bf42ca7d1ff28c6a32962747a1e3083294629607ce62e7a1734de04af13e vmlinuz-lts \
-  cb3459c743d0f2e0236c79a0abc49956b6d1190a709da51aa1c2acbc9e1e0c66 alpine-minirootfs-3.22.7-x86.tar.gz \
-  | shasum -a 256 -c
-cd ../..
 python3 scripts/make_initramfs.py fixtures/alpine/alpine-minirootfs-3.22.7-x86.tar.gz \
   fixtures/alpine/initramfs.cpio.gz
 ./scripts/run_alpine.sh
@@ -62,10 +56,6 @@ python3 scripts/make_initramfs.py fixtures/debian/bookworm-i386-slim-rootfs.tar.
   fixtures/debian/slim-initramfs.cpio.gz
 ./scripts/run_debian.sh
 ```
-
-検証時のSHA256（配布URLは更新される場合あり）：
-- `linux` (6.1.0-50-686): `c77cd9c37609b8b1b1cdfbb91b644a44d606d3d75da8656a0c79635be0b89c21`
-- `bookworm-i386-slim-rootfs.tar.gz`: `8268d978265dc07d9054d3d23c581ec1e6c2d82b134331d09069a923d04dc48a`
 
 ### ゲスト内でのセルフコンパイル
 
